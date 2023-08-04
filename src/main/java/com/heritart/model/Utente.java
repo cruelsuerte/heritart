@@ -3,6 +3,7 @@ package com.heritart.model;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
@@ -13,14 +14,15 @@ import java.util.Set;
 @Document("utenti")
 public class Utente {
 
-    private @MongoId ObjectId id;
-    private String email;
+    private @Id String id;
+    private @Indexed(unique = true) String email;
     private String password;
     private String nome;
     private String cognome;
     private Ruolo ruolo;
     private String telefono;
     private String indirizzo;
+    private boolean enabled;
 
     public Utente(String email, String password, String nome, String cognome, Ruolo ruolo) {
         this.email = email;
@@ -28,10 +30,11 @@ public class Utente {
         this.nome = nome;
         this.cognome = cognome;
         this.ruolo = ruolo;
+        this.enabled = false;
     }
 
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
@@ -70,6 +73,15 @@ public class Utente {
     public void setIndirizzo(String indirizzo) {
         this.indirizzo = indirizzo;
     }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
 
 
 }

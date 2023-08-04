@@ -146,6 +146,7 @@
 
 <div th:if="${message} and ${error}" class="alert alert-danger w-25 mx-auto" role="alert">
     <span th:text="${message}"></span>
+    <a th:if="${resendId}" th:href="@{/Home/Resend/{idUser}(idUser=${resendId})}"> Rinvia mail di conferma</a>
 </div>
 <div th:if="${message} and !${error}" class="alert alert-success w-25 mx-auto" role="alert">
     <span th:text="${message}"></span>

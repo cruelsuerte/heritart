@@ -1,5 +1,6 @@
 package com.heritart;
 
+import com.heritart.dao.TokenRepository;
 import com.heritart.dao.UtentiRepository;
 import com.heritart.model.Ruolo;
 import com.heritart.model.Utente;
@@ -22,6 +23,9 @@ public class HeritartApplication implements CommandLineRunner{
 	@Autowired
 	UtentiRepository utentiRepository;
 
+	@Autowired
+	TokenRepository tokenRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(HeritartApplication.class, args);
 	}
@@ -30,6 +34,7 @@ public class HeritartApplication implements CommandLineRunner{
 	public void run(String... args) {
 
 		utentiRepository.deleteAll();
+		tokenRepository.deleteAll();
 
 		System.out.println("Data creation started...");
 

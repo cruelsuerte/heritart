@@ -25,7 +25,7 @@ public class AuthenticationService implements UserDetailsService {
 
         Utente utente = utentiRepository.findByEmail(email);
 
-        if (utente != null){
+        if (utente != null && utente.isEnabled()){
             List ruolo = Arrays.asList(new SimpleGrantedAuthority(utente.getRuolo().name()));
 
             System.out.println("ACCESSO EFFETTUATO");
