@@ -12,5 +12,8 @@ public interface UtentiRepository extends MongoRepository<Utente, String> {
     @Query("{email:'?0'}")
     Utente findByEmail(String email);
 
+    @Query(value = "{email:'?0'}", exists = true)
+    boolean isRegistered(String email);
+
 
 }

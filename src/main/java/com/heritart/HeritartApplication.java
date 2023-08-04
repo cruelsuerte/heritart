@@ -33,24 +33,24 @@ public class HeritartApplication implements CommandLineRunner{
 
 		System.out.println("Data creation started...");
 
-		Utente utente1 = new Utente("vansmilton@gmail.com", new BCryptPasswordEncoder().encode("cruel"),"Salvatore", "Criscuolo", Ruolo.GESTORE);
-		Utente utente2 = new Utente("lucacampanile3@gmail.com", new BCryptPasswordEncoder().encode("luca"),"Luca", "Campanile", Ruolo.CLIENTE);
-		utentiRepository.save(utente1);
-		utentiRepository.save(utente2);
-
-
-		Utente user = utentiRepository.findByEmail("vansmilton@gmail.com");
-
-		if (user != null) {
-			System.out.println("Email: " + user.getEmail());
-			if (user.getRuolo() == Ruolo.GESTORE){
-				System.out.println("sono gestore");
-			}
-		}
-
-		else {
-			System.out.println("Non trovato");
-		}
+//		Utente utente2 = new Utente("lucacampanile3@gmail.com", new BCryptPasswordEncoder().encode("luca"),"Luca", "Campanile", Ruolo.CLIENTE);
+//		utentiRepository.save(utente2);
+//
+//
+//		Utente user = utentiRepository.findByEmail("lucacampanile3@gmail.com");
+//
+//		if (user != null) {
+//			System.out.println("Email: " + user.getEmail());
+//			if (user.getRuolo() == Ruolo.CLIENTE){
+//				System.out.println("sono cliente");
+//				System.out.println(user.getTelefono());
+//				System.out.println(user.getIndirizzo());
+//			}
+//		}
+//
+//		else {
+//			System.out.println("Non trovato");
+//		}
 
 
 		System.out.println(utentiRepository.count());

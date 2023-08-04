@@ -4,9 +4,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-
-    <title>Home</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous"></script>
+    <title>HeritArt</title>
 </head>
 
 <body style="background: url('../general/background.png');
@@ -30,7 +29,7 @@
 
         <!-- Login -->
         <div class="tab-pane container active" id="login">
-            <form th:action="@{'/'}" method="post">
+            <form th:action="@{'/Home'}" method="post">
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
                     <input type="email" class="form-control" id="email" name="email">
@@ -56,15 +55,126 @@
             <div class="tab-content pt-3">
                 <!-- Cliente -->
                 <div class="tab-pane container active" id="cliente">
-                    cliente
+                    <form th:action="@{'/Home/newCliente'}" method="post" class="row g-3">
+                        <div class="col-12">
+                            <label for="email-cl" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email-cl" name="email-cl" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="password-cl" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password-cl" name="password-cl" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="passconf-cl" class="form-label">Conferma password</label>
+                            <input type="password" class="form-control" id="passconf-cl" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="nome-cl" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="nome-cl" name="nome-cl" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="cognome-cl" class="form-label">Cogome</label>
+                            <input type="text" class="form-control" id="cognome-cl" name="cognome-cl" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="paese-cl" class="form-label">Paese</label>
+                            <select id="paese-cl" class="form-select" name="paese-cl" required>
+                                <option selected>Italia</option>
+                                <option>...</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="citta-cl" class="form-label">Città</label>
+                            <input type="text" class="form-control" id="citta-cl" name="citta-cl" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="cap-cl" class="form-label">CAP</label>
+                            <input type="text" class="form-control" pattern="[0-9]{5}" id="cap-cl" name="cap-cl" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="via-cl" class="form-label">Indirizzo</label>
+                            <input type="text" class="form-control" placeholder="es. Via Plauto 4" id="via-cl" name="via-cl" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="tel-cl" class="form-label">Telefono</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">+39</div>
+                                </div>
+                                <input type="tel"  class="form-control" placeholder="es. 333 33 33 333" pattern="[0-9]{3} [0-9]{2} [0-9]{2} [0-9]{3}" id="tel-cl" name="tel-cl" required>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">Registrati</button>
+                        </div>
+                    </form>
                 </div>
                 <!-- Gestore -->
                 <div class="tab-pane container fade" id="gestore">
-                    gestore
+                    <form th:action="@{'/Home/newGestore'}" method="post" class="row g-3">
+                        <div class="col-12">
+                            <label for="email-ge" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email-ge" name="email-ge" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="password-ge" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password-ge" name="password-ge" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="passconf-ge" class="form-label">Conferma password</label>
+                            <input type="password" class="form-control" id="passconf-ge" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="nome-ge" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="nome-ge" name="nome-ge" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="cognome-ge" class="form-label">Cogome</label>
+                            <input type="text" class="form-control" id="cognome-ge" name="cognome-ge" required>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">Registrati</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
 
     </div>
+
 </div>
+
+<div th:if="${message} and ${error}" class="alert alert-danger w-25 mx-auto" role="alert">
+    <span th:text="${message}"></span>
+</div>
+<div th:if="${message} and !${error}" class="alert alert-success w-25 mx-auto" role="alert">
+    <span th:text="${message}"></span>
+</div>
+
 </body>
+
+<script>
+    var passwordCl = document.getElementById("password-cl"), confirm_passwordCl = document.getElementById("passconf-cl");
+    var passwordGe = document.getElementById("password-ge"), confirm_passwordGe = document.getElementById("passconf-ge");
+
+    function validatePasswordCl(){
+      if(passwordCl.value != confirm_passwordCl.value) {
+        confirm_passwordCl.setCustomValidity("Le password non coincidono");
+      } else {
+        confirm_passwordCl.setCustomValidity('');
+      }
+    }
+
+    function validatePasswordGe(){
+      if(passwordGe.value != confirm_passwordGe.value) {
+        confirm_passwordGe.setCustomValidity("Le password non coincidono");
+      } else {
+        confirm_passwordGe.setCustomValidity('');
+      }
+    }
+
+    passwordCl.onchange = validatePasswordCl;
+    confirm_passwordCl.onkeyup = validatePasswordCl;
+    passwordGe.onchange = validatePasswordGe;
+    confirm_passwordGe.onkeyup = validatePasswordGe;
+</script>

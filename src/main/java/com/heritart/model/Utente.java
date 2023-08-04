@@ -19,7 +19,8 @@ public class Utente {
     private String nome;
     private String cognome;
     private Ruolo ruolo;
-
+    private String telefono;
+    private String indirizzo;
 
     public Utente(String email, String password, String nome, String cognome, Ruolo ruolo) {
         this.email = email;
@@ -52,6 +53,22 @@ public class Utente {
 
     public Ruolo getRuolo() {
         return ruolo;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getIndirizzo() {
+        return indirizzo;
+    }
+
+    public void setIndirizzo(String indirizzo) {
+        this.indirizzo = indirizzo;
     }
 
 

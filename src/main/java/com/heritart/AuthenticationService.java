@@ -28,7 +28,7 @@ public class AuthenticationService implements UserDetailsService {
         if (utente != null){
             List ruolo = Arrays.asList(new SimpleGrantedAuthority(utente.getRuolo().name()));
 
-            System.out.println("AUTENTICAZIONE");
+            System.out.println("ACCESSO EFFETTUATO");
 
             return new User(utente.getEmail(), utente.getPassword(), ruolo);
         }
