@@ -1,5 +1,6 @@
 package com.heritart;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,12 +17,14 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfig {
 
+    @Autowired
+    AuthenticationService authenticationService;
 
     @Bean
     public AuthenticationManager customAuthenticationManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject
                 (AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(new AuthenticationService())
+        authenticationManagerBuilder.userDetailsService(authenticationService)
                 .passwordEncoder(bCryptPasswordEncoder());
         return authenticationManagerBuilder.build();
     }

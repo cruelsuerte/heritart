@@ -3,8 +3,10 @@ package com.heritart;
 import com.heritart.dao.UtentiRepository;
 import com.heritart.model.Utente;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +22,9 @@ import java.util.Set;
 public class AuthenticationService implements UserDetailsService {
     @Autowired
     UtentiRepository utentiRepository;
+
+    private Utente utente;
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
@@ -30,6 +35,7 @@ public class AuthenticationService implements UserDetailsService {
 
             System.out.println("ACCESSO EFFETTUATO");
 
+            this.utente = utente;
             return new User(utente.getEmail(), utente.getPassword(), ruolo);
         }
 
@@ -37,6 +43,15 @@ public class AuthenticationService implements UserDetailsService {
             throw new UsernameNotFoundException("Not found");
 
         }
+    }
+
+    public Authentication getAuthentication(){
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
+
+    public Utente getUser(){
+        return utente;
     }
 
 }

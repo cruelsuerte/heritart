@@ -1,7 +1,9 @@
 package com.heritart;
 
+import com.heritart.dao.OpereRepository;
 import com.heritart.dao.TokenRepository;
 import com.heritart.dao.UtentiRepository;
+import com.heritart.model.Opera.*;
 import com.heritart.model.Ruolo;
 import com.heritart.model.Utente;
 import org.bson.types.ObjectId;
@@ -13,7 +15,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +28,9 @@ public class HeritartApplication implements CommandLineRunner{
 	UtentiRepository utentiRepository;
 
 	@Autowired
+	OpereRepository opereRepository;
+
+	@Autowired
 	TokenRepository tokenRepository;
 
 	public static void main(String[] args) {
@@ -31,12 +38,25 @@ public class HeritartApplication implements CommandLineRunner{
 	}
 
 	@Override
-	public void run(String... args) {
+	public void run(String... args) throws ParseException {
 
-		utentiRepository.deleteAll();
-		tokenRepository.deleteAll();
+		System.out.println("HeritArt");
 
-		System.out.println("Data creation started...");
+		opereRepository.deleteAll();
+
+		Opera opera = new Opera("Nascita di Venere", "Sandro Botticelli",1996,"Napoli", Tipologia.DIPINTO,"26 x 15","bel dipinto");
+		opera.setCondizioni(Condizioni.get("In ottime condizioni"));
+		opera.setTecnica(Tecnica.get("Olio su tela"));
+		opera.setCorrenteArtistica(CorrenteArtistica.RINASCIMENTO);
+		opera.setProprieta(Proprieta.COLLEZIONE_PUBBLICA);
+		opereRepository.save(opera);
+		opera = opereRepository.findByTitolo("Nascita di Venere");
+		System.out.println(opera.getArtista());
+
+
+
+//		utentiRepository.deleteAll();
+//		tokenRepository.deleteAll();
 
 //		Utente utente2 = new Utente("lucacampanile3@gmail.com", new BCryptPasswordEncoder().encode("luca"),"Luca", "Campanile", Ruolo.CLIENTE);
 //		utentiRepository.save(utente2);

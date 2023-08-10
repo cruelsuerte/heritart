@@ -1,5 +1,6 @@
 package com.heritart.control;
 
+import com.heritart.AuthenticationService;
 import com.heritart.MailSender;
 import com.heritart.dao.TokenRepository;
 import com.heritart.dao.UtentiRepository;
@@ -10,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.NoSuchElementException;
 
 @Controller
 public class WebController implements ErrorController {
@@ -28,6 +32,9 @@ public class WebController implements ErrorController {
 
     @Autowired
     TokenRepository tokenRepository;
+
+    @Autowired
+    AuthenticationService authenticationService;
 
     @GetMapping("/Home")
     public String home(Model model) {
@@ -40,15 +47,10 @@ public class WebController implements ErrorController {
     }
 
     @PostMapping("/Home/login")
-    public String login(RedirectAttributes redirectAttributes) throws Exception{
+    public String login() throws Exception{
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        String e = auth.getPrincipal().toString();
-
-        String ruolo = auth.getAuthorities().iterator().next().getAuthority();
-
-        System.out.println(e + ruolo);
+        Utente utente = authenticationService.getUser();
+        String ruolo = utente.getRuolo().name();
 
         if (ruolo == "GESTORE"){
             return "redirect:/Gestore";
@@ -65,9 +67,23 @@ public class WebController implements ErrorController {
     }
 
     @PostMapping("/Home/loginFailure")
-    public String loginFailure(RedirectAttributes redirectAttributes) throws Exception{
+    public String loginFailure(@RequestParam("email") String email,
+                               @RequestParam("password") String password,
+                               RedirectAttributes redirectAttributes){
 
-        redirectAttributes.addFlashAttribute("message", "Autenticazione fallita.");
+        Utente utente = utentiRepository.findByEmail(email);
+        BCryptPasswordEncoder bCryptEncoder = new BCryptPasswordEncoder();
+
+        if (utente != null && bCryptEncoder.matches(password,utente.getPassword()) && !utente.isEnabled()){
+            redirectAttributes.addFlashAttribute("message", "Registrazione di " + utente.getEmail() + " non confermata.");
+            redirectAttributes.addFlashAttribute("resendId", utente.getId());
+
+        }
+
+        else {
+            redirectAttributes.addFlashAttribute("message", "Autenticazione fallita.");
+        }
+
         redirectAttributes.addFlashAttribute("error",true);
 
         return "redirect:/Home";
@@ -136,15 +152,12 @@ public class WebController implements ErrorController {
         if (utente != null && !utente.isEnabled()){
 
             if(token != null && !token.isExpired()){
-
                 utente.setEnabled(true);
                 utentiRepository.save(utente);
                 tokenRepository.deleteById(idToken);
 
                 redirectAttributes.addFlashAttribute("message", "Registrazione di " + email + " confermata.");
                 redirectAttributes.addFlashAttribute("error",false);
-
-
             }
 
             else {
@@ -169,14 +182,12 @@ public class WebController implements ErrorController {
             String email = utente.getEmail();
             VerificationToken token = tokenRepository.findByEmail(email);
 
-            if(token != null && token.isExpired()) {
-
+            if(token != null) {
                 String idToken = token.getId();
                 tokenRepository.deleteById(idToken);
-                newRegistration(email, redirectAttributes);
-
             }
 
+            newRegistration(email, redirectAttributes);
         }
 
         return "redirect:/Home";
@@ -185,9 +196,7 @@ public class WebController implements ErrorController {
 
     @GetMapping("/Cliente")
     public String cliente(Model model){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
-        Utente utente = utentiRepository.findByEmail(email);
+        Utente utente = authenticationService.getUser();
         model.addAttribute("utente",utente);
         return "cliente";
     }
@@ -195,9 +204,7 @@ public class WebController implements ErrorController {
 
     @GetMapping("/Gestore")
     public String gestore(Model model){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
-        Utente utente = utentiRepository.findByEmail(email);
+        Utente utente = authenticationService.getUser();
         model.addAttribute("utente",utente);
         return "gestore";
     }
@@ -216,5 +223,9 @@ public class WebController implements ErrorController {
                         " http://localhost:8080/Home/Confirm/" + token.getId() + ", a presto.");
     }
 
+    @ExceptionHandler(NoSuchElementException.class)
+    public String NoSuchElementException() {
+        return "redirect:/error";
+    }
 
 }

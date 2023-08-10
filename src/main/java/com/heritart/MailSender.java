@@ -33,7 +33,7 @@ public class MailSender {
 
     public void send(String toAddress, String subject, String text){
 
-        session.setDebug(true);
+        // session.setDebug(true);
 
         try {
             MimeMessage message = new MimeMessage(session);
