@@ -4,7 +4,7 @@ public enum Proprieta {
 
     COLLEZIONE_PRIVATA("Collezione privata"),
     COLLEZIONE_PUBBLICA("Collezione pubblica"),
-    ARTISTA("Di proprietà dell'artista");
+    ARTISTA("Artista");
 
     private final String name;
     Proprieta(String name){

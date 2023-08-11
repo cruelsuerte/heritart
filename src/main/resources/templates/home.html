@@ -70,11 +70,11 @@
                         </div>
                         <div class="col-md-6">
                             <label for="nome-cl" class="form-label">Nome</label>
-                            <input type="text" class="form-control" id="nome-cl" name="nome-cl" required>
+                            <input type="text" class="form-control" id="nome-cl" name="nome-cl" pattern="\S+.*" required>
                         </div>
                         <div class="col-md-6">
                             <label for="cognome-cl" class="form-label">Cogome</label>
-                            <input type="text" class="form-control" id="cognome-cl" name="cognome-cl" required>
+                            <input type="text" class="form-control" id="cognome-cl" name="cognome-cl" pattern="\S+.*" required>
                         </div>
                         <div class="col-md-4">
                             <label for="paese-cl" class="form-label">Paese</label>
@@ -85,7 +85,7 @@
                         </div>
                         <div class="col-md-4">
                             <label for="citta-cl" class="form-label">Città</label>
-                            <input type="text" class="form-control" id="citta-cl" name="citta-cl" required>
+                            <input type="text" class="form-control" id="citta-cl" name="citta-cl" pattern="\S+.*" required>
                         </div>
                         <div class="col-md-4">
                             <label for="cap-cl" class="form-label">CAP</label>
@@ -93,13 +93,13 @@
                         </div>
                         <div class="col-12">
                             <label for="via-cl" class="form-label">Indirizzo</label>
-                            <input type="text" class="form-control" placeholder="es. Via Plauto 4" id="via-cl" name="via-cl" required>
+                            <input type="text" class="form-control" placeholder="es. Via Plauto 4" id="via-cl" name="via-cl" pattern="\S+.*" required>
                         </div>
                         <div class="col-12">
                             <label for="tel-cl" class="form-label">Telefono</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <div class="input-group-text">+39</div>
+                                    <span class="input-group-text">+39</span>
                                 </div>
                                 <input type="tel"  class="form-control" placeholder="es. 333 33 33 333" pattern="[0-9]{3} [0-9]{2} [0-9]{2} [0-9]{3}" id="tel-cl" name="tel-cl" required>
                             </div>
@@ -126,11 +126,11 @@
                         </div>
                         <div class="col-md-6">
                             <label for="nome-ge" class="form-label">Nome</label>
-                            <input type="text" class="form-control" id="nome-ge" name="nome-ge" required>
+                            <input type="text" class="form-control" id="nome-ge" name="nome-ge" pattern="\S+.*" required>
                         </div>
                         <div class="col-md-6">
                             <label for="cognome-ge" class="form-label">Cogome</label>
-                            <input type="text" class="form-control" id="cognome-ge" name="cognome-ge" required>
+                            <input type="text" class="form-control" id="cognome-ge" name="cognome-ge" pattern="\S+.*" required>
                         </div>
                         <div class="col-12">
                             <button type="submit" class="btn btn-primary">Registrati</button>

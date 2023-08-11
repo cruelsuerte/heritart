@@ -9,10 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Year;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Document("opere")
@@ -23,7 +21,7 @@ public class Opera {
     private int annoCreazione;
     private String provenienza;
     private Tipologia tipologia;
-    private String dimensione;
+    private String dimensioni;
     private String descrizione;
     private Proprieta proprieta;
     private CorrenteArtistica correnteArtistica;
@@ -35,14 +33,15 @@ public class Opera {
     private int prezzoMinimo;
 
     public Opera(String titolo, String artista, int annoCreazione, String provenienza,
-                 Tipologia tipologia, String dimensione, String descrizione) throws ParseException {
+                 Tipologia tipologia, String dimensioni, Proprieta proprieta, Condizioni condizioni) throws ParseException {
         this.titolo = titolo;
         this.artista = artista;
         this.annoCreazione = annoCreazione;
         this.tipologia = tipologia;
         this.provenienza = provenienza;
-        this.dimensione = dimensione;
-        this.descrizione = descrizione;
+        this.dimensioni = dimensioni;
+        this.proprieta = proprieta;
+        this.condizioni = condizioni;
 
         this.stato = StatoOpera.DISPONIBILE;
         this.prezzoMinimo = 0;
@@ -73,14 +72,16 @@ public class Opera {
         return tipologia;
     }
 
-    public String getDimensione() {
-        return dimensione;
+    public String getDimensioni() {
+        return dimensioni;
     }
 
     public String getDescrizione() {
         return descrizione;
     }
-
+    public void setDescrizione(String descrizione) {
+        this.descrizione = descrizione;
+    }
     public Proprieta getProprieta() {
         return proprieta;
     }

@@ -42,16 +42,16 @@ public class HeritartApplication implements CommandLineRunner{
 
 		System.out.println("HeritArt");
 
-		opereRepository.deleteAll();
+//		opereRepository.deleteAll();
 
-		Opera opera = new Opera("Nascita di Venere", "Sandro Botticelli",1996,"Napoli", Tipologia.DIPINTO,"26 x 15","bel dipinto");
-		opera.setCondizioni(Condizioni.get("In ottime condizioni"));
-		opera.setTecnica(Tecnica.get("Olio su tela"));
-		opera.setCorrenteArtistica(CorrenteArtistica.RINASCIMENTO);
-		opera.setProprieta(Proprieta.COLLEZIONE_PUBBLICA);
-		opereRepository.save(opera);
-		opera = opereRepository.findByTitolo("Nascita di Venere");
-		System.out.println(opera.getArtista());
+//		Opera opera = new Opera("Nascita di Venere", "Sandro Botticelli",1996,"Napoli", Tipologia.Dipinto,"26 x 15",Proprieta.COLLEZIONE_PRIVATA, Condizioni.NUOVA);
+//		opera.setCondizioni(Condizioni.get("In ottime condizioni"));
+//		opera.setTecnica(Tecnica.get("Olio su tela"));
+//		opera.setCorrenteArtistica(CorrenteArtistica.RINASCIMENTO);
+//		opera.setProprieta(Proprieta.COLLEZIONE_PUBBLICA);
+//		opereRepository.save(opera);
+//		opera = opereRepository.findByTitolo("Nascita di Venere");
+//		System.out.println(opera.getArtista());
 
 
 
@@ -77,8 +77,6 @@ public class HeritartApplication implements CommandLineRunner{
 //			System.out.println("Non trovato");
 //		}
 
-
-		System.out.println(utentiRepository.count());
 
 	}
 }
