@@ -1,10 +1,9 @@
-package com.heritart;
+package com.heritart.utils;
 
 import com.heritart.dao.UtentiRepository;
-import com.heritart.model.Utente;
+import com.heritart.model.utenti.Utente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -14,9 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class AuthenticationService implements UserDetailsService {

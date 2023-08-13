@@ -1,4 +1,4 @@
-package com.heritart.model.Opera;
+package com.heritart.model.opere;
 
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
@@ -29,8 +29,11 @@ public class Opera {
     private Materiale materiale;
     private Condizioni condizioni;
     private List<Binary> photoList= new ArrayList<>();
+
+    private int baseAsta;
     private StatoOpera stato;
-    private int prezzoMinimo;
+    private String idAsta;
+
 
     public Opera(String titolo, String artista, int annoCreazione, String provenienza,
                  Tipologia tipologia, String dimensioni, Proprieta proprieta, Condizioni condizioni) throws ParseException {
@@ -44,7 +47,7 @@ public class Opera {
         this.condizioni = condizioni;
 
         this.stato = StatoOpera.DISPONIBILE;
-        this.prezzoMinimo = 0;
+        this.baseAsta = 0;
     }
 
     public String getId() {
@@ -131,6 +134,14 @@ public class Opera {
         this.photoList.add(photo);
     }
 
+    public int getBaseAsta() {
+        return baseAsta;
+    }
+
+    public void setBaseAsta(int prezzoMinimo) {
+        this.baseAsta = prezzoMinimo;
+    }
+
     public StatoOpera getStato() {
         return stato;
     }
@@ -139,11 +150,14 @@ public class Opera {
         this.stato = stato;
     }
 
-    public int getPrezzoMinimo() {
-        return prezzoMinimo;
+    public String getAsta() {
+        return idAsta;
     }
 
-    public void setPrezzoMinimo(int prezzoMinimo) {
-        this.prezzoMinimo = prezzoMinimo;
+    public void setAsta(String idAsta) {
+        if(this.stato == StatoOpera.DISPONIBILE){
+            setStato(StatoOpera.ASTA);
+            this.idAsta = idAsta;
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.heritart.model;
+package com.heritart.model.utenti;
 
 public enum Ruolo {
     CLIENTE,

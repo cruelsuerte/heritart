@@ -18,7 +18,7 @@
     <img src="../general/heritart-logo.png">
 </div>
 <div class="container border-primary rounded-lg w-50 p-2 mx-auto my-3 border" style="background-color: white; opacity: 0.8; text-align: center">
-    <h2>Benvenuto <span th:text="${utente.getNome()}"></span></h2>
+    <h2>Benvenuto <span th:text="${nome}"></span></h2>
     <a th:href="@{'/Home/logout'}">LOGOUT</a>
 </div>
 </body>

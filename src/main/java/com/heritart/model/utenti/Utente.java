@@ -1,15 +1,8 @@
-package com.heritart.model;
+package com.heritart.model.utenti;
 
-import org.apache.commons.codec.digest.DigestUtils;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
-
-
-import java.util.Collection;
-import java.util.Set;
 
 @Document("utenti")
 public class Utente {

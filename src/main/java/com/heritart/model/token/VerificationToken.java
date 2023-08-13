@@ -1,4 +1,4 @@
-package com.heritart.model;
+package com.heritart.model.token;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;

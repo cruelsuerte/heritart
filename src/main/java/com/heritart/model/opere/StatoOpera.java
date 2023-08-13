@@ -1,7 +1,7 @@
-package com.heritart.model.Opera;
+package com.heritart.model.opere;
 
 public enum StatoOpera {
     DISPONIBILE,
-    ALLASTA,
+    ASTA,
     AGGIUDICATA
 }

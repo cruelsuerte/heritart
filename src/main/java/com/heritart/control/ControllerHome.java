@@ -1,45 +1,31 @@
 package com.heritart.control;
 
-import com.heritart.AuthenticationService;
-import com.heritart.MailSender;
+import com.heritart.utils.AuthenticationService;
+import com.heritart.utils.MailSender;
 import com.heritart.dao.OpereRepository;
 import com.heritart.dao.TokenRepository;
 import com.heritart.dao.UtentiRepository;
-import com.heritart.model.Opera.*;
-import com.heritart.model.Ruolo;
-import com.heritart.model.Utente;
-import com.heritart.model.VerificationToken;
+import com.heritart.model.utenti.Ruolo;
+import com.heritart.model.utenti.Utente;
+import com.heritart.model.token.VerificationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.annotation.security.RolesAllowed;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.Date;
 import java.util.NoSuchElementException;
 
 @Controller
-public class WebController implements ErrorController {
+public class ControllerHome implements ErrorController {
     @Autowired
     UtentiRepository utentiRepository;
 
     @Autowired
     TokenRepository tokenRepository;
-
-    @Autowired
-    OpereRepository opereRepository;
 
     @Autowired
     AuthenticationService authenticationService;
@@ -51,6 +37,7 @@ public class WebController implements ErrorController {
 
     @GetMapping("/error")
     public String error() {
+        System.out.println("ERRORE");
         return "redirect:/Home";
     }
 
@@ -201,92 +188,6 @@ public class WebController implements ErrorController {
         return "redirect:/Home";
     }
 
-
-    @GetMapping("/Cliente")
-    public String cliente(Model model){
-        Utente utente = authenticationService.getUser();
-        model.addAttribute("utente",utente);
-        return "cliente";
-    }
-
-
-    @GetMapping("/Gestore")
-    public String gestore(Model model){
-        Utente utente = authenticationService.getUser();
-        model.addAttribute("utente",utente);
-        return "gestore";
-    }
-
-    @GetMapping("/Gestore/newOpera")
-    public String opera(Model model){
-        model.addAttribute("tipologiaList",Tipologia.values());
-        model.addAttribute("condizioniList", Condizioni.values());
-        model.addAttribute("tecnicaList", Tecnica.values());
-        model.addAttribute("correnteArtisticaList", CorrenteArtistica.values());
-        model.addAttribute("materialeList", Materiale.values());
-        model.addAttribute("proprietaList", Proprieta.values());
-        return "aggiungi_opera";
-    }
-
-
-    @PostMapping("/Gestore/newOpera")
-    public String newOpera(@RequestParam("titolo") String titolo,
-                           @RequestParam("artista") String artista,
-                           @RequestParam("annoCreazione") int annoCreazione,
-                           @RequestParam("provenienza") String provenienza,
-                           @RequestParam("tipologia") Tipologia tipologia,
-                           @RequestParam("proprieta") Proprieta proprieta,
-                           @RequestParam("condizioni") Condizioni condizioni,
-                           @RequestParam("dim1") int dim1,
-                           @RequestParam("dim2") int dim2,
-                           @RequestParam(name = "dim3", defaultValue = "0") int dim3,
-                           @RequestParam(name = "descrizione",required = false) String descrizione,
-                           @RequestParam(name = "correnteArtistica", required = false) CorrenteArtistica correnteArtistica,
-                           @RequestParam(name = "tecnica",required = false) Tecnica tecnica,
-                           @RequestParam(name = "materiale", required = false) Materiale materiale,
-                           @RequestParam(name = "prezzoMinimo",defaultValue = "0") int prezzoMinimo,
-                           @RequestParam(name = "files", required = false) MultipartFile[] files,
-                           RedirectAttributes redirectAttributes) throws ParseException, IOException {
-
-        String dimensioni = dim1 + " x " + dim2;
-        if(dim3 != 0) {
-            dimensioni = descrizione + " x " + dim3;
-        }
-
-        Opera opera = new Opera(titolo, artista, annoCreazione, provenienza, tipologia, dimensioni, proprieta, condizioni);
-
-        if(descrizione != null && !descrizione.isBlank()){
-            opera.setDescrizione(descrizione);
-        }
-
-        if(correnteArtistica != null){
-            opera.setCorrenteArtistica(correnteArtistica);
-        }
-
-        if(tecnica != null){
-            opera.setTecnica(tecnica);
-        }
-
-        if(materiale != null){
-            opera.setMateriale(materiale);
-        }
-
-        if(prezzoMinimo != 0){
-            opera.setPrezzoMinimo(prezzoMinimo);
-        }
-
-        if(files.length != 0){
-            for (MultipartFile file : files) {
-                opera.addPhoto(file);
-            }
-        }
-
-        opereRepository.save(opera);
-
-        redirectAttributes.addFlashAttribute("success",true);
-
-        return "redirect:/Gestore/newOpera";
-    }
 
     public void newRegistration(String email, RedirectAttributes redirectAttributes){
 
