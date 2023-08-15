@@ -1,5 +1,6 @@
 package com.heritart;
 
+import com.heritart.dao.AsteRepository;
 import com.heritart.dao.OpereRepository;
 import com.heritart.dao.TokenRepository;
 import com.heritart.dao.UtentiRepository;
@@ -13,6 +14,12 @@ import java.util.Date;
 
 @SpringBootApplication
 public class HeritartApplication implements CommandLineRunner{
+
+	@Autowired
+	OpereRepository opereRepository;
+
+	@Autowired
+	AsteRepository asteRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(HeritartApplication.class, args);

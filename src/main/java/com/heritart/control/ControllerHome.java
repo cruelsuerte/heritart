@@ -14,12 +14,17 @@ import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.util.NoSuchElementException;
 
 @Controller
+@Validated
 public class ControllerHome implements ErrorController {
     @Autowired
     UtentiRepository utentiRepository;
@@ -70,36 +75,33 @@ public class ControllerHome implements ErrorController {
         BCryptPasswordEncoder bCryptEncoder = new BCryptPasswordEncoder();
 
         if (utente != null && bCryptEncoder.matches(password,utente.getPassword()) && !utente.isEnabled()){
-            redirectAttributes.addFlashAttribute("message", "Registrazione di " + utente.getEmail() + " non confermata.");
+            redirectAttributes.addFlashAttribute("error", "Registrazione di " + utente.getEmail() + " non confermata.");
             redirectAttributes.addFlashAttribute("resendId", utente.getId());
 
         }
 
         else {
-            redirectAttributes.addFlashAttribute("message", "Autenticazione fallita.");
+            redirectAttributes.addFlashAttribute("error", "Autenticazione fallita.");
         }
-
-        redirectAttributes.addFlashAttribute("error",true);
 
         return "redirect:/Home";
 
     }
 
     @PostMapping("/Home/newCliente")
-    public String newCliente(@RequestParam("email-cl") String email,
-                             @RequestParam("password-cl") String password,
-                             @RequestParam("nome-cl") String nome,
-                             @RequestParam("cognome-cl") String cognome,
-                             @RequestParam("paese-cl") String paese,
-                             @RequestParam("citta-cl") String citta,
-                             @RequestParam("cap-cl") String cap,
-                             @RequestParam("via-cl") String via,
-                             @RequestParam("tel-cl") String telefono,
+    public String newCliente(@RequestParam("email-cl") @Email String email,
+                             @RequestParam("password-cl") @NotBlank String password,
+                             @RequestParam("nome-cl") @NotBlank String nome,
+                             @RequestParam("cognome-cl") @NotBlank String cognome,
+                             @RequestParam("paese-cl") @NotBlank String paese,
+                             @RequestParam("citta-cl") @NotBlank String citta,
+                             @RequestParam("cap-cl") @NotBlank String cap,
+                             @RequestParam("via-cl") @NotBlank String via,
+                             @RequestParam("tel-cl") @NotBlank String telefono,
                              RedirectAttributes redirectAttributes){
 
         if (utentiRepository.isRegistered(email)){
-            redirectAttributes.addFlashAttribute("message", "L'utente " + email + " è già registrato.");
-            redirectAttributes.addFlashAttribute("error",true);
+            redirectAttributes.addFlashAttribute("error", "L'utente " + email + " è già registrato.");
         }
 
         else {
@@ -116,15 +118,14 @@ public class ControllerHome implements ErrorController {
 
 
     @PostMapping("/Home/newGestore")
-    public String newGestore(@RequestParam("email-ge") String email,
-                             @RequestParam("password-ge") String password,
-                             @RequestParam("nome-ge") String nome,
-                             @RequestParam("cognome-ge") String cognome,
+    public String newGestore(@RequestParam("email-ge") @Email String email,
+                             @RequestParam("password-ge") @NotBlank String password,
+                             @RequestParam("nome-ge") @NotBlank String nome,
+                             @RequestParam("cognome-ge") @NotBlank String cognome,
                              RedirectAttributes redirectAttributes){
 
         if (utentiRepository.isRegistered(email)){
-            redirectAttributes.addFlashAttribute("message", "L'utente " + email + " è già registrato.");
-            redirectAttributes.addFlashAttribute("error",true);
+            redirectAttributes.addFlashAttribute("error", "L'utente " + email + " è già registrato.");
         }
 
         else {
@@ -151,14 +152,13 @@ public class ControllerHome implements ErrorController {
                 utentiRepository.save(utente);
                 tokenRepository.deleteById(idToken);
 
-                redirectAttributes.addFlashAttribute("message", "Registrazione di " + email + " confermata.");
-                redirectAttributes.addFlashAttribute("error",false);
+                redirectAttributes.addFlashAttribute("success", "Registrazione di " + email + " confermata.");
             }
 
             else {
-                redirectAttributes.addFlashAttribute("message", "Link di conferma scaduto.");
+                redirectAttributes.addFlashAttribute("error", "Link di conferma scaduto.");
                 redirectAttributes.addFlashAttribute("resendId", utente.getId());
-                redirectAttributes.addFlashAttribute("error",true);
+
             }
 
         }
@@ -195,17 +195,11 @@ public class ControllerHome implements ErrorController {
         token.setExpiration(1);
         tokenRepository.save(token);
 
-        redirectAttributes.addFlashAttribute("message", "Conferma la registrazione accedendo al link inviato a " + email);
-        redirectAttributes.addFlashAttribute("error",false);
+        redirectAttributes.addFlashAttribute("success", "Conferma la registrazione accedendo al link inviato a " + email);
         MailSender mailSender = new MailSender("heritart.noreply@gmail.com","smtp.gmail.com","axqoblnhehpubpbg");
         mailSender.send(email,"Conferma registrazione",
                 "Ciao, grazie per esserti registrato a HeritArt come. Puoi confermare la tua registrazione a questo link:" +
                         " http://localhost:8080/Home/Confirm/" + token.getId() + ", a presto.");
-    }
-
-    @ExceptionHandler(NoSuchElementException.class)
-    public String NoSuchElementException() {
-        return "redirect:/error";
     }
 
 }

@@ -26,7 +26,6 @@ public class Utente {
         this.enabled = false;
     }
 
-
     public String getId() {
         return id;
     }
@@ -74,7 +73,6 @@ public class Utente {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
-
 
 
 }

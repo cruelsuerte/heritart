@@ -2,11 +2,16 @@ package com.heritart.model.opere;
 
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.text.ParseException;
 
@@ -15,10 +20,12 @@ import java.util.List;
 
 @Document("opere")
 public class Opera {
-    private @Id String id;
-    private @Indexed(unique = true) String titolo;
+    @Id
+    private String id;
+    @Indexed(unique = true)
+    private String titolo;
     private String artista;
-    private int annoCreazione;
+    private Integer annoCreazione;
     private String provenienza;
     private Tipologia tipologia;
     private String dimensioni;
@@ -29,25 +36,21 @@ public class Opera {
     private Materiale materiale;
     private Condizioni condizioni;
     private List<Binary> photoList= new ArrayList<>();
-
-    private int baseAsta;
+    private Integer baseAsta;
     private StatoOpera stato;
     private String idAsta;
 
-
-    public Opera(String titolo, String artista, int annoCreazione, String provenienza,
-                 Tipologia tipologia, String dimensioni, Proprieta proprieta, Condizioni condizioni) throws ParseException {
+    public Opera(String titolo, String artista, Integer annoCreazione, String provenienza,
+                 Tipologia tipologia, Proprieta proprieta, Condizioni condizioni){
         this.titolo = titolo;
         this.artista = artista;
         this.annoCreazione = annoCreazione;
-        this.tipologia = tipologia;
         this.provenienza = provenienza;
-        this.dimensioni = dimensioni;
+        this.tipologia = tipologia;
         this.proprieta = proprieta;
         this.condizioni = condizioni;
-
-        this.stato = StatoOpera.DISPONIBILE;
         this.baseAsta = 0;
+        this.stato = StatoOpera.DISPONIBILE;
     }
 
     public String getId() {
@@ -62,8 +65,7 @@ public class Opera {
         return artista;
     }
 
-
-    public int getAnnoCreazione() {
+    public Integer getAnnoCreazione() {
         return annoCreazione;
     }
 
@@ -79,18 +81,19 @@ public class Opera {
         return dimensioni;
     }
 
+    public void setDimensioni(String dimensioni) {
+        this.dimensioni = dimensioni;
+    }
+
     public String getDescrizione() {
         return descrizione;
     }
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
     }
+
     public Proprieta getProprieta() {
         return proprieta;
-    }
-
-    public void setProprieta(Proprieta proprieta) {
-        this.proprieta = proprieta;
     }
 
     public CorrenteArtistica getCorrenteArtistica() {
@@ -121,10 +124,6 @@ public class Opera {
         return condizioni;
     }
 
-    public void setCondizioni(Condizioni condizioni) {
-        this.condizioni = condizioni;
-    }
-
     public List<Binary> getPhotoList() {
         return photoList;
     }
@@ -134,12 +133,12 @@ public class Opera {
         this.photoList.add(photo);
     }
 
-    public int getBaseAsta() {
+    public Integer getBaseAsta() {
         return baseAsta;
     }
 
-    public void setBaseAsta(int prezzoMinimo) {
-        this.baseAsta = prezzoMinimo;
+    public void setBaseAsta(Integer baseAsta) {
+        this.baseAsta = baseAsta;
     }
 
     public StatoOpera getStato() {

@@ -23,9 +23,13 @@ public class Asta {
     private StatoAsta stato;
     private Binary photo;
 
-    public Asta(String titolo, String idGestore) throws ParseException {
+    public Asta(String titolo, String idGestore, Date dataInizio, Date dataFine) throws ParseException {
         this.titolo = titolo;
         this.idGestore = idGestore;
+
+        this.dataInizio = dataInizio;
+        this.dataFine = dataFine;
+
         this.stato = StatoAsta.PROGRAMMATA;
     }
 
@@ -45,21 +49,9 @@ public class Asta {
     public Date getDataInizio() {
         return dataInizio;
     }
-
-    public void setDataInizio(String dataInizio) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-        this.dataInizio = sdf.parse(dataInizio);
-    }
-
     public Date getDataFine() {
         return dataFine;
     }
-
-    public void setDataFine(String dataFine) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-        this.dataFine = sdf.parse(dataFine);
-    }
-
     public String getDescrizione() {
         return descrizione;
     }
@@ -83,6 +75,16 @@ public class Asta {
     public void addPhoto(MultipartFile file) throws IOException {
         Binary photo = new Binary(BsonBinarySubType.BINARY, file.getBytes());
         this.photo = photo;
+    }
+
+    public boolean isInCorso(){
+        Date now = new Date();
+        return now.after(this.dataInizio);
+    }
+
+    public boolean isConclusa(){
+        Date now = new Date();
+        return now.after(this.dataFine);
     }
 
 

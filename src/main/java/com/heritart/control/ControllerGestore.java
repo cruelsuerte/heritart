@@ -7,19 +7,32 @@ import com.heritart.model.aste.Asta;
 import com.heritart.model.opere.*;
 import com.heritart.model.utenti.Utente;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.util.Date;
 import java.util.List;
 
 @Controller
+@Validated
 public class ControllerGestore {
 
     @Autowired
@@ -52,30 +65,35 @@ public class ControllerGestore {
 
 
     @PostMapping("/Gestore/newOpera")
-    public String newOpera(@RequestParam("titolo") String titolo,
-                           @RequestParam("artista") String artista,
-                           @RequestParam("annoCreazione") int annoCreazione,
-                           @RequestParam("provenienza") String provenienza,
-                           @RequestParam("tipologia") Tipologia tipologia,
-                           @RequestParam("proprieta") Proprieta proprieta,
-                           @RequestParam("condizioni") Condizioni condizioni,
-                           @RequestParam("dim1") int dim1,
-                           @RequestParam("dim2") int dim2,
-                           @RequestParam(name = "dim3", defaultValue = "0") int dim3,
-                           @RequestParam(name = "descrizione",required = false) String descrizione,
-                           @RequestParam(name = "correnteArtistica", required = false) CorrenteArtistica correnteArtistica,
-                           @RequestParam(name = "tecnica",required = false) Tecnica tecnica,
-                           @RequestParam(name = "materiale", required = false) Materiale materiale,
-                           @RequestParam(name = "baseAsta",defaultValue = "0") int baseAsta,
-                           @RequestParam(name = "files", required = false) MultipartFile[] files,
+    public String newOpera(@RequestParam @NotBlank String titolo,
+                           @RequestParam @NotBlank String artista,
+                           @RequestParam @Min(0) @Max(2023) Integer anno,
+                           @RequestParam @NotBlank String provenienza,
+                           @RequestParam Tipologia tipologia,
+                           @RequestParam Proprieta proprieta,
+                           @RequestParam Condizioni condizioni,
+                           @RequestParam(defaultValue = "0") @Min(0) int dim1,
+                           @RequestParam(defaultValue = "0") @Min(0) int dim2,
+                           @RequestParam(defaultValue = "0") @Min(0) int dim3,
+                           @RequestParam(required = false) String descrizione,
+                           @RequestParam(required = false) CorrenteArtistica correnteArtistica,
+                           @RequestParam(required = false) Tecnica tecnica,
+                           @RequestParam(required = false) Materiale materiale,
+                           @RequestParam(defaultValue = "0") @Min(0) Integer baseAsta,
+                           @RequestParam(required = false) @Size(max = 6) MultipartFile[] files,
                            RedirectAttributes redirectAttributes) throws ParseException, IOException {
 
-        String dimensioni = dim1 + " x " + dim2;
-        if(dim3 != 0) {
-            dimensioni = descrizione + " x " + dim3;
-        }
 
-        Opera opera = new Opera(titolo, artista, annoCreazione, provenienza, tipologia, dimensioni, proprieta, condizioni);
+        Opera opera = new Opera(titolo, artista, anno, provenienza, tipologia, proprieta, condizioni);
+
+        if (dim1 > 0 && dim2 > 0){
+            String dimensioni = dim1 + " x " + dim2;
+            if (dim3 > 0){
+                dimensioni = dimensioni + " x " + dim3;
+            }
+            dimensioni = dimensioni + " (cm)";
+            opera.setDimensioni(dimensioni);
+        }
 
         if(descrizione != null && !descrizione.isBlank()){
             opera.setDescrizione(descrizione);
@@ -93,11 +111,11 @@ public class ControllerGestore {
             opera.setMateriale(materiale);
         }
 
-        if(baseAsta != 0){
+        if(baseAsta > 0){
             opera.setBaseAsta(baseAsta);
         }
 
-        if(files.length != 0){
+        if(files.length > 0){
             for (MultipartFile file : files) {
                 opera.addPhoto(file);
             }
@@ -105,7 +123,7 @@ public class ControllerGestore {
 
         opereRepository.save(opera);
 
-        redirectAttributes.addFlashAttribute("success",true);
+        redirectAttributes.addFlashAttribute("success","Opera aggiunta al catalogo.");
 
         return "redirect:/Gestore/newOpera";
     }
@@ -121,30 +139,34 @@ public class ControllerGestore {
     }
 
     @PostMapping("/Gestore/newAsta")
-    public String newAsta(@RequestParam("titolo") String titolo,
-                          @RequestParam("dataInizio") String dataInizio,
-                          @RequestParam("dataFine") String dataFine,
-                          @RequestParam("opere") List<String> opere,
-                          @RequestParam(name = "descrizione",required = false) String descrizione,
-                          @RequestParam(name = "file", required = false) MultipartFile file,
+    public String newAsta(@RequestParam @NotBlank String titolo,
+                          @RequestParam("dataInizio") @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") @Future Date start,
+                          @RequestParam("dataFine") @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") @Future Date end,
+                          @RequestParam List<String> opere,
+                          @RequestParam(required = false) String descrizione,
+                          @RequestParam(required = false) MultipartFile file,
                           RedirectAttributes redirectAttributes) throws ParseException, IOException {
 
-        String idGestore = authenticationService.getUser().getId();
+        Duration duration = Duration.between(start.toInstant(), end.toInstant());
+        long hours = duration.toHours();
 
-        Asta asta = new Asta(titolo, idGestore);
-
-        asta.setDataInizio(dataInizio);
-        asta.setDataFine(dataFine);
-
-        if(descrizione != null && !descrizione.isBlank()){
-            asta.setDescrizione(descrizione);
+        if(hours < 3){
+            redirectAttributes.addFlashAttribute("error","Durata minima di un'asta: 3 ore. " +
+                    "Fissare un termine ad almeno 3 ore dopo la data d'inizio.");
         }
 
-        if(!file.isEmpty()){
-            asta.addPhoto(file);
-        }
+        else{
+            String idGestore = authenticationService.getUser().getId();
 
-        if (!opere.isEmpty()){
+            Asta asta = new Asta(titolo, idGestore, start, end);
+
+            if(descrizione != null && !descrizione.isBlank()){
+                asta.setDescrizione(descrizione);
+            }
+
+            if(!file.isEmpty()){
+                asta.addPhoto(file);
+            }
 
             asteRepository.save(asta);
 
@@ -157,7 +179,16 @@ public class ControllerGestore {
                 opereRepository.save(opera);
             }
 
-            redirectAttributes.addFlashAttribute("success",true);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat hourFormat = new SimpleDateFormat("hh:mm");
+            String dataInizio = dateFormat.format(start);
+            String oreInizio = hourFormat.format(start);
+            String dataFine = dateFormat.format(end);
+            String oreFine = hourFormat.format(end);
+
+            redirectAttributes.addFlashAttribute("success","Asta aggiunta al catalogo. " +
+                    "L'asta avrà inizio in data " + dataInizio + " alle ore " + oreInizio +
+                    " e terminerà in data " + dataFine + " alle ore " + oreFine +".");
         }
 
         return "redirect:/Gestore/newAsta";
