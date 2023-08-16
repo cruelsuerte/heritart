@@ -7,6 +7,8 @@ import com.heritart.model.aste.Asta;
 import com.heritart.model.opere.*;
 import com.heritart.model.utenti.Utente;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,15 +47,32 @@ public class ControllerGestore {
     AuthenticationService authenticationService;
 
     @GetMapping("/Gestore")
-    public String gestore(Model model){
+    public String gestore(@RequestParam(defaultValue = "0") int page,
+                          Model model){
+
         Utente utente = authenticationService.getUser();
-        String nome = utente.getNome();
-        model.addAttribute("nome",nome);
-        return "gestore";
+        String name = utente.getNome();
+        String role = utente.getRuolo().name();
+
+        Page<Asta> aste = asteRepository.findAll(PageRequest.of(page, 8));
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+
+        model.addAttribute("name", name);
+        model.addAttribute("role", role);
+        model.addAttribute("aste", aste);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("dateFormat", dateFormat);
+
+        return "home";
     }
 
     @GetMapping("/Gestore/newOpera")
     public String opera(Model model){
+
+        Utente utente = authenticationService.getUser();
+        String name = utente.getNome();
+
+        model.addAttribute("name", name);
         model.addAttribute("tipologiaList", Tipologia.values());
         model.addAttribute("condizioniList", Condizioni.values());
         model.addAttribute("tecnicaList", Tecnica.values());
@@ -131,8 +150,12 @@ public class ControllerGestore {
     @GetMapping("/Gestore/newAsta")
     public String aste(Model model){
 
+        Utente utente = authenticationService.getUser();
+        String name = utente.getNome();
+
         List<Opera> opere = opereRepository.findByStato(StatoOpera.DISPONIBILE);
 
+        model.addAttribute("name", name);
         model.addAttribute("opere", opere);
 
         return "aggiungi_asta";

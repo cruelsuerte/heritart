@@ -23,12 +23,4 @@ public enum Tecnica {
         return name;
     }
 
-    public static Tecnica get(String name){
-        for (Tecnica t : values()) {
-            if (t.getName().equals(name)){
-                return t;
-            }
-        }
-        return null;
-    }
 }

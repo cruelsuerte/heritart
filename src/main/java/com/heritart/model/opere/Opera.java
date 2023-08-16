@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.text.ParseException;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @Document("opere")
@@ -35,7 +36,7 @@ public class Opera {
     private Tecnica tecnica;
     private Materiale materiale;
     private Condizioni condizioni;
-    private List<Binary> photoList= new ArrayList<>();
+    private List<String> photoList= new ArrayList<>();
     private Integer baseAsta;
     private StatoOpera stato;
     private String idAsta;
@@ -124,12 +125,13 @@ public class Opera {
         return condizioni;
     }
 
-    public List<Binary> getPhotoList() {
+    public List<String> getPhotoList() {
         return photoList;
     }
 
     public void addPhoto(MultipartFile file) throws IOException {
-        Binary photo = new Binary(BsonBinarySubType.BINARY, file.getBytes());
+        Binary binPhoto = new Binary(BsonBinarySubType.BINARY, file.getBytes());
+        String photo = Base64.getEncoder().encodeToString(binPhoto.getData());
         this.photoList.add(photo);
     }
 

@@ -28,15 +28,4 @@ public enum CorrenteArtistica {
         return name;
     }
 
-    public static CorrenteArtistica get(String name){
-        for (CorrenteArtistica c : values()) {
-            if (c.getName().equals(name)){
-                return c;
-            }
-        }
-        return null;
-    }
-
-
-
 }

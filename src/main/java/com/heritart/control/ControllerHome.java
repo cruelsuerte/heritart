@@ -37,7 +37,7 @@ public class ControllerHome implements ErrorController {
 
     @GetMapping("/Home")
     public String home(Model model) {
-        return "home";
+        return "login";
     }
 
     @GetMapping("/error")
@@ -47,7 +47,13 @@ public class ControllerHome implements ErrorController {
     }
 
     @PostMapping("/Home/login")
-    public String login() throws Exception{
+    public String login() {
+        System.out.println("ACCESSO EFFETTUATO");
+        return "redirect:/Home/access";
+    }
+
+    @GetMapping("/Home/access")
+    public String access() {
 
         Utente utente = authenticationService.getUser();
         String ruolo = utente.getRuolo().name();

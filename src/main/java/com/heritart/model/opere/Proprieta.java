@@ -14,13 +14,4 @@ public enum Proprieta {
         return name;
     }
 
-    public static Proprieta get(String name){
-        for (Proprieta p : values()) {
-            if (p.getName().equals(name)){
-                return p;
-            }
-        }
-        return null;
-    }
-
 }

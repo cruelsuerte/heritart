@@ -14,12 +14,4 @@ public enum Condizioni {
         return name;
     }
 
-    public static Condizioni get(String name){
-        for (Condizioni c : values()) {
-            if (c.getName().equals(name)){
-                return c;
-            }
-        }
-        return null;
-    }
 }

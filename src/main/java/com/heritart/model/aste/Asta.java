@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 
 @Document("aste")
@@ -21,7 +22,7 @@ public class Asta {
     private Date dataInizio;
     private Date dataFine;
     private StatoAsta stato;
-    private Binary photo;
+    private String photo;
 
     public Asta(String titolo, String idGestore, Date dataInizio, Date dataFine) throws ParseException {
         this.titolo = titolo;
@@ -68,12 +69,13 @@ public class Asta {
         this.stato = stato;
     }
 
-    public Binary getPhoto() {
+    public String getPhoto() {
         return photo;
     }
 
     public void addPhoto(MultipartFile file) throws IOException {
-        Binary photo = new Binary(BsonBinarySubType.BINARY, file.getBytes());
+        Binary binPhoto = new Binary(BsonBinarySubType.BINARY, file.getBytes());
+        String photo = Base64.getEncoder().encodeToString(binPhoto.getData());
         this.photo = photo;
     }
 
@@ -82,7 +84,7 @@ public class Asta {
         return now.after(this.dataInizio);
     }
 
-    public boolean isConclusa(){
+    public boolean isTerminata(){
         Date now = new Date();
         return now.after(this.dataFine);
     }
