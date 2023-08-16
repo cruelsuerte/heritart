@@ -53,20 +53,21 @@ public class SecurityConfig {
         http.csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/Home/**","/error","/general/**").permitAll()
+                .antMatchers("/","/general/**","/error","/logout","/loginFailure",
+                            "/newCliente","/newGestore","/Confirm/**","/Resend/**").permitAll()
+                .antMatchers("/Home","/Catalog/**").hasAnyAuthority("GESTORE","CLIENTE")
                 .antMatchers("/Gestore/**").hasAuthority("GESTORE")
-                .antMatchers("/Cliente/**").hasAuthority("CLIENTE")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/Home")
+                .loginPage("/")
                 .usernameParameter("email")
-                .successForwardUrl("/Home/login")
-                .failureForwardUrl("/Home/loginFailure")
+                .defaultSuccessUrl("/Home")
+                .failureForwardUrl("/loginFailure")
                 .and()
                 .logout()
-                .logoutUrl("/Home/logout")
-                .logoutSuccessUrl("/Home")
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
                 .deleteCookies("JSESSIONID");
         return http.build();
     }

@@ -29,7 +29,7 @@
 
         <!-- Login -->
         <div class="tab-pane container active" id="login">
-            <form th:action="@{'/Home'}" method="post">
+            <form th:action="@{'/'}" method="post">
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
                     <input type="email" class="form-control" id="email" name="email">
@@ -55,7 +55,7 @@
             <div class="tab-content pt-3">
                 <!-- Cliente -->
                 <div class="tab-pane container active" id="cliente">
-                    <form th:action="@{'/Home/newCliente'}" method="post" class="row g-3">
+                    <form th:action="@{'/newCliente'}" method="post" class="row g-3">
                         <div class="col-12">
                             <label for="email-cl" class="form-label">Email</label>
                             <input type="email" class="form-control" id="email-cl" name="email-cl" required>
@@ -111,7 +111,7 @@
                 </div>
                 <!-- Gestore -->
                 <div class="tab-pane container fade" id="gestore">
-                    <form th:action="@{'/Home/newGestore'}" method="post" class="row g-3">
+                    <form th:action="@{'/newGestore'}" method="post" class="row g-3">
                         <div class="col-12">
                             <label for="email-ge" class="form-label">Email</label>
                             <input type="email" class="form-control" id="email-ge" name="email-ge" required>
@@ -146,7 +146,7 @@
 
 <div th:if="${error}" class="alert alert-danger w-25 mx-auto" role="alert">
     <span th:text="${error}"></span>
-    <a th:if="${resendId}" th:href="@{/Home/Resend/{idUser}(idUser=${resendId})}"> Rinvia mail di conferma</a>
+    <a th:if="${resendId}" th:href="@{/Resend/{idUser}(idUser=${resendId})}"> Rinvia mail di conferma</a>
 </div>
 <div th:if="${success}" class="alert alert-success w-25 mx-auto" role="alert">
     <span th:text="${success}"></span>

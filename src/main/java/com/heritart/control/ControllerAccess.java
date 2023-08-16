@@ -2,7 +2,6 @@ package com.heritart.control;
 
 import com.heritart.utils.AuthenticationService;
 import com.heritart.utils.MailSender;
-import com.heritart.dao.OpereRepository;
 import com.heritart.dao.TokenRepository;
 import com.heritart.dao.UtentiRepository;
 import com.heritart.model.utenti.Ruolo;
@@ -16,63 +15,32 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.util.NoSuchElementException;
 
 @Controller
 @Validated
-public class ControllerHome implements ErrorController {
+public class ControllerAccess implements ErrorController {
     @Autowired
     UtentiRepository utentiRepository;
 
     @Autowired
     TokenRepository tokenRepository;
 
-    @Autowired
-    AuthenticationService authenticationService;
-
-    @GetMapping("/Home")
-    public String home(Model model) {
+    @GetMapping("/")
+    public String login() {
         return "login";
     }
 
     @GetMapping("/error")
     public String error() {
         System.out.println("ERRORE");
-        return "redirect:/Home";
+        return "redirect:/";
     }
 
-    @PostMapping("/Home/login")
-    public String login() {
-        System.out.println("ACCESSO EFFETTUATO");
-        return "redirect:/Home/access";
-    }
-
-    @GetMapping("/Home/access")
-    public String access() {
-
-        Utente utente = authenticationService.getUser();
-        String ruolo = utente.getRuolo().name();
-
-        if (ruolo == "GESTORE"){
-            return "redirect:/Gestore";
-        }
-
-        else if (ruolo == "CLIENTE") {
-            return "redirect:/Cliente";
-        }
-
-        else{
-            return "redirect:/Home";
-        }
-
-    }
-
-    @PostMapping("/Home/loginFailure")
+    @PostMapping("/loginFailure")
     public String loginFailure(@RequestParam("email") String email,
                                @RequestParam("password") String password,
                                RedirectAttributes redirectAttributes){
@@ -90,11 +58,11 @@ public class ControllerHome implements ErrorController {
             redirectAttributes.addFlashAttribute("error", "Autenticazione fallita.");
         }
 
-        return "redirect:/Home";
+        return "redirect:/";
 
     }
 
-    @PostMapping("/Home/newCliente")
+    @PostMapping("/newCliente")
     public String newCliente(@RequestParam("email-cl") @Email String email,
                              @RequestParam("password-cl") @NotBlank String password,
                              @RequestParam("nome-cl") @NotBlank String nome,
@@ -119,11 +87,11 @@ public class ControllerHome implements ErrorController {
             newRegistration(email, redirectAttributes);
         }
 
-        return "redirect:/Home";
+        return "redirect:/";
     }
 
 
-    @PostMapping("/Home/newGestore")
+    @PostMapping("/newGestore")
     public String newGestore(@RequestParam("email-ge") @Email String email,
                              @RequestParam("password-ge") @NotBlank String password,
                              @RequestParam("nome-ge") @NotBlank String nome,
@@ -140,10 +108,10 @@ public class ControllerHome implements ErrorController {
             newRegistration(email, redirectAttributes);
         }
 
-        return "redirect:/Home";
+        return "redirect:/";
     }
 
-    @GetMapping("/Home/Confirm/{idToken}")
+    @GetMapping("/Confirm/{idToken}")
     public String confirm(@PathVariable String idToken,
                           RedirectAttributes redirectAttributes){
 
@@ -169,10 +137,10 @@ public class ControllerHome implements ErrorController {
 
         }
 
-        return "redirect:/Home";
+        return "redirect:/";
     }
 
-    @GetMapping("/Home/Resend/{idUser}")
+    @GetMapping("/Resend/{idUser}")
     public String resend(@PathVariable String idUser,
                          RedirectAttributes redirectAttributes){
 
@@ -191,7 +159,7 @@ public class ControllerHome implements ErrorController {
             newRegistration(email, redirectAttributes);
         }
 
-        return "redirect:/Home";
+        return "redirect:/";
     }
 
 
@@ -205,7 +173,7 @@ public class ControllerHome implements ErrorController {
         MailSender mailSender = new MailSender("heritart.noreply@gmail.com","smtp.gmail.com","axqoblnhehpubpbg");
         mailSender.send(email,"Conferma registrazione",
                 "Ciao, grazie per esserti registrato a HeritArt come. Puoi confermare la tua registrazione a questo link:" +
-                        " http://localhost:8080/Home/Confirm/" + token.getId() + ", a presto.");
+                        " http://localhost:8080/Confirm/" + token.getId() + ", a presto.");
     }
 
 }

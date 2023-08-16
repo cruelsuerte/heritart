@@ -22,9 +22,9 @@
 
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex">
                 <li class="nav-item">
-                    <a class="nav-link active" th:href="@{'/Home'}">Home</a>
+                    <a class="nav-link" th:href="@{'/Home/access'}">Home</a>
                 </li>
-                <li th:if="${role == 'Gestore'}" class="nav-item dropdown">
+                <li th:if="${role == 'GESTORE'}" class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Aggiungi
                     </a>
@@ -45,7 +45,7 @@
                     <a class="nav-link"><span class="bi bi-person-fill"></span> <span th:text="${name}"></span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{'/logout'}"><span class="bi bi-door-open-fill"></span> Logout</a>
+                    <a class="nav-link" th:href="@{'/Home/logout'}"><span class="bi bi-door-open-fill"></span> Logout</a>
                 </li>
             </ul>
 
@@ -58,43 +58,28 @@
 </div>
 <div class="container w-75 px-5 py-2 mx-auto my-3" style="text-align: center">
 
-    <div class="row row-cols-1 row-cols-md-4 g-4 mb-4">
-        <div class="col" th:each="asta: ${aste.content}">
-            <div class="card border-primary">
-                <img class="card-img-top" th:src="|data:image/png;base64,${asta.photo}|">
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${asta.titolo}"></h5>
-                    <p class="card-text" th:text="${asta.descrizione}"></p>
-                    <p class="card-text">
-                        <span class="fw-bold" th:text="${asta.stato.name}" th:style="${asta.stato.name == 'In corso' ? 'color: green' : ''}"
-                              th:styleappend="${asta.stato.name == 'Terminata' ? 'color: red' : ''}"></span>
-                        <br><small>Inizio: <span th:text="${dateFormat.format(asta.dataInizio)}"></span>
-                        <br>Termine: <span th:text="${dateFormat.format(asta.dataFine)}"></span></small>
-                    </p>
-                    <a th:href="@{'/Home'}" class="btn btn-primary">Accedi</a>
-                </div>
-            </div>
+        <div class="col-12" th:each="opera: ${opere.content}">
+            <h5 class="card-title" th:text="${opera.titolo}"></h5>
         </div>
-    </div>
 
 
     <nav>
         <ul class="pagination justify-content-center">
             <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
-                <a class="page-link" th:href="@{/Home(page=0)}">First</a>
+                <a class="page-link" th:href="@{/Cliente(page=0)}">First</a>
             </li>
             <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
-                <a class="page-link" th:href="@{/Home(page=${currentPage - 1})}">&laquo;</a>
+                <a class="page-link" th:href="@{/Cliente(page=${currentPage - 1})}">&laquo;</a>
             </li>
             <li class="page-item" th:each="i : ${#numbers.sequence(0, aste.totalPages - 1)}"
                 th:classappend="${currentPage == i ? 'active' : ''}">
-                <a class="page-link" th:href="@{/Home(page=${i})}" th:text="${i + 1}"></a>
+                <a class="page-link" th:href="@{/Cliente(page=${i})}" th:text="${i + 1}"></a>
             </li>
             <li class="page-item" th:classappend="${currentPage == aste.totalPages - 1 ? 'disabled' : ''}">
-                <a class="page-link" th:href="@{/Home(page=${currentPage + 1})}">&raquo;</a>
+                <a class="page-link" th:href="@{/Cliente(page=${currentPage + 1})}">&raquo;</a>
             </li>
             <li class="page-item" th:classappend="${currentPage == aste.totalPages - 1 ? 'disabled' : ''}">
-                <a class="page-link" th:href="@{/Home(page=${aste.totalPages - 1})}">Last</a>
+                <a class="page-link" th:href="@{/Cliente(page=${aste.totalPages - 1})}">Last</a>
             </li>
         </ul>
     </nav>
