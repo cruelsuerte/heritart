@@ -22,9 +22,9 @@
 
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{'/Home/access'}">Home</a>
+                    <a class="nav-link" th:href="@{'/Home'}">Home</a>
                 </li>
-                <li th:if="${role == 'GESTORE'}" class="nav-item dropdown">
+                <li th:if="${role == 'Gestore'}" class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Aggiungi
                     </a>
@@ -35,17 +35,12 @@
                 </li>
             </ul>
 
-            <form class="d-flex ms-auto me-auto w-75">
-                <input class="form-control ms-2 me-2 " type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-light" type="submit"><i class="bi bi-search"></i></button>
-            </form>
-
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex">
                 <li class="nav-item">
                     <a class="nav-link"><span class="bi bi-person-fill"></span> <span th:text="${name}"></span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{'/Home/logout'}"><span class="bi bi-door-open-fill"></span> Logout</a>
+                    <a class="nav-link" th:href="@{'/logout'}"><span class="bi bi-door-open-fill"></span> Logout</a>
                 </li>
             </ul>
 
@@ -58,28 +53,60 @@
 </div>
 <div class="container w-75 px-5 py-2 mx-auto my-3" style="text-align: center">
 
-        <div class="col-12" th:each="opera: ${opere.content}">
-            <h5 class="card-title" th:text="${opera.titolo}"></h5>
+    <div class="card mb-3 border-primary" th:each="opera: ${opere.content}">
+        <div class="row g-0">
+            <div class="col-md-4 ps-5" style="display: flex;">
+                <img class="img-fluid" th:src="|data:image/png;base64,${opera.photoList.get(0)}|" style="margin: auto; max-height: 300px;">
+            </div>
+            <div class="col-md-6">
+                <div class="card-body">
+                    <h2 class="card-title"th:text="${opera.titolo}">Titolo</h2>
+                    <h5 class="card-text">
+                        <span th:text="${opera.artista}"></span>, <span th:text="${opera.annoCreazione}"></span>
+                        &ensp;-&ensp;
+                        <span th:text="${opera.provenienza}"></span>, <span th:text="${opera.proprieta.name}"></span>
+                    </h5>
+                    <p class="card-text text-muted">
+                        <small th:text="${opera.condizioni.name}"></small>
+                        <br><small th:text="${opera.dimensioni}"></small>
+                    </p>
+                    <p class="card-text w-100 px-5" style="overflow: scroll; height: 50px; text-align: left;" >
+                            <span th:text="${opera.descrizione}"></span>
+                    </p>
+                    <p class="card-text text-muted">
+                        <small th:text="${opera.materiale}"></small>
+                        <br><small th:text="${opera.tecnica.name}"></small>
+                        <br><small th:text="${opera.correnteArtistica.name}"></small>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-2" style="display: flex; align-items: center;">
+                <div class="card-body">
+                    <a th:href="@{/Catalog/{idAsta}(idAsta=${idAsta})}" class="btn btn-primary btn-lg">Partecipa</a>
+                </div>
+            </div>
         </div>
+    </div>
+
 
 
     <nav>
         <ul class="pagination justify-content-center">
             <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
-                <a class="page-link" th:href="@{/Cliente(page=0)}">First</a>
+                <a class="page-link" th:href="@{/Catalog/{idAsta}(idAsta=${idAsta},page=0)}">First</a>
             </li>
             <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
-                <a class="page-link" th:href="@{/Cliente(page=${currentPage - 1})}">&laquo;</a>
+                <a class="page-link" th:href="@{/Catalog/{idAsta}(idAsta=${idAsta},page=${currentPage - 1})}">&laquo;</a>
             </li>
-            <li class="page-item" th:each="i : ${#numbers.sequence(0, aste.totalPages - 1)}"
+            <li class="page-item" th:each="i : ${#numbers.sequence(0, opere.totalPages - 1)}"
                 th:classappend="${currentPage == i ? 'active' : ''}">
-                <a class="page-link" th:href="@{/Cliente(page=${i})}" th:text="${i + 1}"></a>
+                <a class="page-link" th:href="@{/Catalog/{idAsta}(idAsta=${idAsta},page=${i})}" th:text="${i + 1}"></a>
             </li>
-            <li class="page-item" th:classappend="${currentPage == aste.totalPages - 1 ? 'disabled' : ''}">
-                <a class="page-link" th:href="@{/Cliente(page=${currentPage + 1})}">&raquo;</a>
+            <li class="page-item" th:classappend="${currentPage == opere.totalPages - 1 ? 'disabled' : ''}">
+                <a class="page-link" th:href="@{/Catalog/{idAsta}(idAsta=${idAsta},page=${currentPage + 1})}">&raquo;</a>
             </li>
-            <li class="page-item" th:classappend="${currentPage == aste.totalPages - 1 ? 'disabled' : ''}">
-                <a class="page-link" th:href="@{/Cliente(page=${aste.totalPages - 1})}">Last</a>
+            <li class="page-item" th:classappend="${currentPage == opere.totalPages - 1 ? 'disabled' : ''}">
+                <a class="page-link" th:href="@{/Catalog/{idAsta}(idAsta=${idAsta},page=${opere.totalPages - 1})}">Last</a>
             </li>
         </ul>
     </nav>

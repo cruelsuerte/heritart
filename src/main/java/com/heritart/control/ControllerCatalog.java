@@ -64,6 +64,7 @@ public class ControllerCatalog {
 
         model.addAttribute("name", name);
         model.addAttribute("role", role);
+        model.addAttribute("idAsta", idAsta);
         model.addAttribute("opere", opere);
         model.addAttribute("currentPage", page);
 

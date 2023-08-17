@@ -63,7 +63,7 @@
             <div class="card border-primary">
                 <img class="card-img-top" th:src="|data:image/png;base64,${asta.photo}|">
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${asta.titolo}"></h5>
+                    <h5 class="card-title" th:text="${asta.titolo}">Titolo</h5>
                     <p class="card-text" th:text="${asta.descrizione}"></p>
                     <p class="card-text">
                         <span class="fw-bold" th:text="${asta.stato.name}" th:style="${asta.stato.name == 'In corso' ? 'color: green' : ''}"
@@ -71,7 +71,7 @@
                         <br><small>Inizio: <span th:text="${dateFormat.format(asta.dataInizio)}"></span>
                         <br>Termine: <span th:text="${dateFormat.format(asta.dataFine)}"></span></small>
                     </p>
-                    <a th:href="@{'/Home'}" class="btn btn-primary">Accedi</a>
+                    <a th:href="@{/Catalog/{idAsta}(idAsta=${asta.id})}" class="btn btn-primary">Accedi</a>
                 </div>
             </div>
         </div>

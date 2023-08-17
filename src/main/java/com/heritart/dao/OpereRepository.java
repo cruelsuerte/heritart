@@ -17,7 +17,7 @@ public interface OpereRepository extends MongoRepository<Opera, String> {
     @Query("{stato:'?0'}")
     List<Opera> findByStato(StatoOpera stato);
 
-    @Query("{idAsta:'?0', stato: 'DISPONIBILE'}")
+    @Query("{idAsta:'?0', stato: 'ASTA'}")
     Page<Opera> findByIdAsta(String idAsta, Pageable pageable);
 
 }
