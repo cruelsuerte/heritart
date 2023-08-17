@@ -59,7 +59,7 @@ public class ControllerCatalog {
         String name = utente.getNome();
         String role = utente.getRuolo().getName();
 
-        Pageable pageable = PageRequest.of(page, 8, Sort.Direction.DESC,"titolo");
+        Pageable pageable = PageRequest.of(page, 8, Sort.Direction.ASC,"titolo");
         Page<Opera> opere = opereRepository.findByIdAsta(idAsta, pageable);
 
         model.addAttribute("name", name);
