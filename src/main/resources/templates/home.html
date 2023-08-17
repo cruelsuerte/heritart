@@ -35,9 +35,14 @@
                 </li>
             </ul>
 
-            <form class="d-flex ms-auto me-auto w-75">
-                <input class="form-control ms-2 me-2 " type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-light" type="submit"><i class="bi bi-search"></i></button>
+            <form class="d-flex ms-auto me-auto w-75" action="#" method="post">
+                <select class="form-select bg-primary border-primary" style="color: white; width: 175px;" id="stato" name="stato" required>
+                    <option value="" selected>Tutte</option>
+                    <option th:value="IN_CORSO">In corso</option>
+                    <option th:value="PROGRAMMATA">In programma</option>
+                </select>
+                <input class="form-control me-2" type="search" placeholder="es. Asta, opera, artista, corrente artistica">
+                <button class="btn btn-light me-5" type="submit"><i class="bi bi-search"></i></button>
             </form>
 
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex">
@@ -60,11 +65,11 @@
 
     <div class="row row-cols-1 row-cols-md-4 g-4 mb-4">
         <div class="col" th:each="asta: ${aste.content}">
-            <div class="card border-primary">
-                <img class="card-img-top" th:src="|data:image/png;base64,${asta.photo}|">
+            <div class="card border-primary" style="height: 500px">
+                <img class="card-img-top bb-3" th:src="|data:image/png;base64,${asta.photo}|" style="height: 250px;">
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${asta.titolo}">Titolo</h5>
-                    <p class="card-text" th:text="${asta.descrizione}"></p>
+                    <h5 class="card-title" th:text="${asta.titolo}" style="overflow: scroll; max-height: 50px;"></h5>
+                    <p class="card-text" th:text="${asta.descrizione}" style="overflow: scroll; height: 55px;"></p>
                     <p class="card-text">
                         <span class="fw-bold" th:text="${asta.stato.name}" th:style="${asta.stato.name == 'In corso' ? 'color: green' : ''}"
                               th:styleappend="${asta.stato.name == 'Terminata' ? 'color: red' : ''}"></span>
