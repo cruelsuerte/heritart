@@ -114,7 +114,7 @@ public class ControllerGestore {
         }
 
         if(baseAsta > 0){
-            opera.setBaseAsta(baseAsta);
+            opera.setMinOfferta(baseAsta);
         }
 
         if(files.length > 0){

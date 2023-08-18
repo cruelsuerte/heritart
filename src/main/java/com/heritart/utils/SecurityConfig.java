@@ -55,7 +55,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/","/general/**","/error","/logout","/loginFailure",
                             "/newCliente","/newGestore","/Confirm/**","/Resend/**").permitAll()
-                .antMatchers("/Home","/Catalog/**").hasAnyAuthority("GESTORE","CLIENTE")
+                .antMatchers("/Home","/Catalog/**","/Asta/**").hasAnyAuthority("GESTORE","CLIENTE")
                 .antMatchers("/Gestore/**").hasAuthority("GESTORE")
                 .anyRequest().authenticated()
                 .and()

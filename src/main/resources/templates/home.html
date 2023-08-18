@@ -65,11 +65,11 @@
 
     <div class="row row-cols-1 row-cols-md-4 g-4 mb-4">
         <div class="col" th:each="asta: ${aste.content}">
-            <div class="card border-primary" style="height: 500px">
+            <div class="card border-primary" style="height: 500px; opacity: 0.8;">
                 <img class="card-img-top bb-3" th:src="|data:image/png;base64,${asta.photo}|" style="height: 250px;">
                 <div class="card-body">
                     <h5 class="card-title" th:text="${asta.titolo}" style="overflow: scroll; max-height: 50px;"></h5>
-                    <p class="card-text" th:text="${asta.descrizione}" style="overflow: scroll; height: 55px;"></p>
+                    <p class="card-text ps-4" th:text="${asta.descrizione}" style="overflow: scroll; height: 55px; text-align: left;"></p>
                     <p class="card-text">
                         <span class="fw-bold" th:text="${asta.stato.name}" th:style="${asta.stato.name == 'In corso' ? 'color: green' : ''}"
                               th:styleappend="${asta.stato.name == 'Terminata' ? 'color: red' : ''}"></span>

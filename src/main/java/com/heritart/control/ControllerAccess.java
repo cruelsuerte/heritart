@@ -22,7 +22,7 @@ import javax.validation.constraints.NotBlank;
 
 @Controller
 @Validated
-public class ControllerAccess implements ErrorController {
+public class ControllerAccess {
     @Autowired
     UtentiRepository utentiRepository;
 
@@ -34,11 +34,7 @@ public class ControllerAccess implements ErrorController {
         return "login";
     }
 
-    @GetMapping("/error")
-    public String error() {
-        System.out.println("ERRORE");
-        return "redirect:/";
-    }
+
 
     @PostMapping("/loginFailure")
     public String loginFailure(@RequestParam("email") String email,

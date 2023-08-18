@@ -58,7 +58,7 @@
 <div th:if="${success}" class="alert alert-success w-50 mx-auto" role="alert">
     <span th:text="${success}"></span> Ritorna alla <a th:href="@{/Home}">Home</a>.
 </div>
-<div class="container border-primary rounded-lg w-50 px-5 py-2 mx-auto my-3 border" style="background-color: white; opacity: 0.8; text-align: center">
+<div class="container border border-primary rounded w-50 px-5 py-2 mx-auto my-3" style="background-color: white; opacity: 0.8; text-align: center">
     <h2>Nuova asta</h2>
 
     <form th:action="@{'/Gestore/newAsta'}" method="post" class="row g-3" enctype="multipart/form-data">

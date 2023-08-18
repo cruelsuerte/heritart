@@ -37,7 +37,7 @@ public class Opera {
     private Materiale materiale;
     private Condizioni condizioni;
     private List<String> photoList= new ArrayList<>();
-    private Integer baseAsta;
+    private Integer minOfferta;
     private StatoOpera stato;
     private String idAsta;
 
@@ -50,7 +50,7 @@ public class Opera {
         this.tipologia = tipologia;
         this.proprieta = proprieta;
         this.condizioni = condizioni;
-        this.baseAsta = 0;
+        this.minOfferta = 0;
         this.stato = StatoOpera.DISPONIBILE;
     }
 
@@ -135,12 +135,12 @@ public class Opera {
         this.photoList.add(photo);
     }
 
-    public Integer getBaseAsta() {
-        return baseAsta;
+    public Integer getMinOfferta() {
+        return minOfferta;
     }
 
-    public void setBaseAsta(Integer baseAsta) {
-        this.baseAsta = baseAsta;
+    public void setMinOfferta(Integer minOfferta) {
+        this.minOfferta = minOfferta;
     }
 
     public StatoOpera getStato() {

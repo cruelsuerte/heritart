@@ -51,43 +51,43 @@
 <div class="container my-4" style="text-align: center">
     <img src="../general/heritart-logo.png">
 </div>
-<div class="container w-75 px-5 py-2 mx-auto my-3" style="text-align: center">
+<div class="container px-5 py-2 mx-auto my-3" style="width: 850px; text-align: center">
 
-    <div class="card mb-3 border-primary" th:each="opera: ${opere.content}">
+    <div class="card mb-4 border-primary" th:each="opera: ${opere.content}">
         <div class="row g-0">
-            <div class="col-md-4 ps-5" style="display: flex;">
-                <img class="img-fluid" th:src="|data:image/png;base64,${opera.photoList.get(0)}|" style="margin: auto; max-height: 300px;">
+            <div class="col-md-5 ps-3" style="display: flex;">
+                <img class="img-fluid" th:src="|data:image/png;base64,${opera.photoList.get(0)}|" style="margin: auto; max-height: 220px;">
             </div>
-            <div class="col-md-6">
+            <div class="col-md-7">
                 <div class="card-body">
-                    <h2 class="card-title"th:text="${opera.titolo}">Titolo</h2>
-                    <h5 class="card-text">
+                    <h3 class="card-title"th:text="${opera.titolo}">Titolo</h3>
+                    <p class="card-text">
                         <span th:text="${opera.artista}"></span>, <span th:text="${opera.annoCreazione}"></span>
                         &ensp;-&ensp;
                         <span th:text="${opera.provenienza}"></span>, <span th:text="${opera.proprieta.name}"></span>
-                    </h5>
-                    <p class="card-text text-muted">
-                        <small th:text="${opera.condizioni.name}"></small>
-                        <br><small th:text="${opera.dimensioni}"></small>
                     </p>
-                    <p class="card-text w-100 px-5" style="overflow: scroll; height: 50px; text-align: left;" >
-                            <span th:text="${opera.descrizione}"></span>
-                    </p>
-                    <p class="card-text text-muted">
-                        <small th:text="${opera.materiale}"></small>
-                        <br><small th:text="${opera.tecnica.name}"></small>
-                        <br><small th:text="${opera.correnteArtistica.name}"></small>
-                    </p>
-                </div>
-            </div>
-            <div class="col-md-2" style="display: flex; align-items: center;">
-                <div class="card-body">
-                    <a th:href="@{/Catalog/{idAsta}(idAsta=${idAsta})}" class="btn btn-primary btn-lg">Partecipa</a>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="card-text text-muted" style="text-align: left;">
+                                <span th:text="${opera.condizioni.name}"></span>
+                                <br><span th:text="${opera.dimensioni}"></span>
+                                <br><span th:text="${opera.materiale}"></span>
+                                <br><span th:text="${opera.tecnica.name}"></span>
+                                <br><span th:text="${opera.correnteArtistica.name}"></span>
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                                <p class="card-text">
+                                    <span th:if="${opera.minOfferta} != 0" th:utext="'Base d\'asta:<br>' + ${opera.minOfferta} + ' €'"></span><br>
+                                    <a th:if="${stato} == 'In corso'" th:href="@{/Asta/{idOpera}(idOpera=${opera.id})}" class="btn btn-primary btn-lg mt-1">Partecipa</a>
+                                    <span th:if="${stato} == 'In programma'" th:text="${stato}" class="fw-bold" ></span>
+                                </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
 
 
     <nav>
