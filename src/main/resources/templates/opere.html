@@ -10,7 +10,7 @@
     <title>HeritArt</title>
 </head>
 
-<body style="background: url('../general/background.png');
+<body style="background: url('/general/background.png');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
@@ -49,7 +49,7 @@
 </nav>
 
 <div class="container my-4" style="text-align: center">
-    <img src="../general/heritart-logo.png">
+    <img src="/general/heritart-logo.png">
 </div>
 <div class="container px-5 py-2 mx-auto my-3" style="width: 850px; text-align: center">
 
@@ -78,8 +78,8 @@
                         </div>
                         <div class="col-md-6">
                                 <p class="card-text">
-                                    <span th:if="${opera.minOfferta} != 0" th:utext="'Base d\'asta:<br>' + ${opera.minOfferta} + ' €'"></span><br>
-                                    <a th:if="${stato} == 'In corso'" th:href="@{/Asta/{idOpera}(idOpera=${opera.id})}" class="btn btn-primary btn-lg mt-1">Partecipa</a>
+                                    <span th:if="${opera.minOfferta} != 0" th:utext="'Ultima offerta:<br>' + ${opera.minOfferta} + ' €'"></span><br>
+                                    <a th:if="${stato} == 'In corso'" th:href="@{/Catalog/{idAsta}/Asta/{idOpera}(idAsta=${idAsta},idOpera=${opera.id})}" class="btn btn-primary btn-lg mt-1">Partecipa</a>
                                     <span th:if="${stato} == 'In programma'" th:text="${stato}" class="fw-bold" ></span>
                                 </p>
                         </div>

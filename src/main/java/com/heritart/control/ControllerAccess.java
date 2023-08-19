@@ -7,6 +7,7 @@ import com.heritart.dao.UtentiRepository;
 import com.heritart.model.utenti.Ruolo;
 import com.heritart.model.utenti.Utente;
 import com.heritart.model.token.VerificationToken;
+import com.heritart.utils.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -28,6 +29,9 @@ public class ControllerAccess {
 
     @Autowired
     TokenRepository tokenRepository;
+
+    @Autowired
+    TransactionService transactionService;
 
     @GetMapping("/")
     public String login() {
@@ -70,17 +74,18 @@ public class ControllerAccess {
                              @RequestParam("tel-cl") @NotBlank String telefono,
                              RedirectAttributes redirectAttributes){
 
-        if (utentiRepository.isRegistered(email)){
-            redirectAttributes.addFlashAttribute("error", "L'utente " + email + " è già registrato.");
-        }
+        Utente utente = new Utente(email, new BCryptPasswordEncoder().encode(password), nome, cognome, Ruolo.CLIENTE);
+        String indirizzo = via + ", " + citta + ", " + paese + ", " + cap;
+        utente.setIndirizzo(indirizzo);
+        utente.setTelefono(telefono);
 
-        else {
-            Utente utente = new Utente(email, new BCryptPasswordEncoder().encode(password), nome, cognome, Ruolo.CLIENTE);
-            String indirizzo = via + ", " + citta + ", " + paese + ", " + cap;
-            utente.setIndirizzo(indirizzo);
-            utente.setTelefono(telefono);
-            utentiRepository.save(utente);
+        boolean newUser = transactionService.newUser(utente);
+
+        if(newUser){
             newRegistration(email, redirectAttributes);
+        }
+        else {
+            redirectAttributes.addFlashAttribute("error", "L'utente " + email + " è già registrato.");
         }
 
         return "redirect:/";
@@ -94,14 +99,16 @@ public class ControllerAccess {
                              @RequestParam("cognome-ge") @NotBlank String cognome,
                              RedirectAttributes redirectAttributes){
 
-        if (utentiRepository.isRegistered(email)){
-            redirectAttributes.addFlashAttribute("error", "L'utente " + email + " è già registrato.");
+        Utente utente = new Utente(email, new BCryptPasswordEncoder().encode(password), nome, cognome, Ruolo.GESTORE);
+
+        boolean newUser = transactionService.newUser(utente);
+
+        if(newUser){
+            newRegistration(email, redirectAttributes);
         }
 
         else {
-            Utente utente = new Utente(email, new BCryptPasswordEncoder().encode(password), nome, cognome, Ruolo.GESTORE);
-            utentiRepository.save(utente);
-            newRegistration(email, redirectAttributes);
+            redirectAttributes.addFlashAttribute("error", "L'utente " + email + " è già registrato.");
         }
 
         return "redirect:/";

@@ -1,12 +1,15 @@
 package com.heritart.control;
 
 import com.heritart.dao.AsteRepository;
+import com.heritart.dao.OfferteRepository;
 import com.heritart.dao.OpereRepository;
 import com.heritart.model.aste.Asta;
 import com.heritart.model.aste.StatoAsta;
+import com.heritart.model.offerte.Offerta;
 import com.heritart.model.opere.Opera;
 import com.heritart.model.utenti.Utente;
 import com.heritart.utils.AuthenticationService;
+import com.heritart.utils.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,10 +19,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.sound.midi.SysexMessage;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Controller
 public class ControllerCatalog {
@@ -30,6 +34,11 @@ public class ControllerCatalog {
     OpereRepository opereRepository;
     @Autowired
     AsteRepository asteRepository;
+    @Autowired
+    OfferteRepository offerteRepository;
+
+    @Autowired
+    TransactionService transactionService;
 
     @GetMapping("/Home")
     public String home(@RequestParam(defaultValue = "0") int page,
@@ -78,22 +87,73 @@ public class ControllerCatalog {
     }
 
 
-    @GetMapping("/Asta/{idOpera}")
-    public String asta(@PathVariable String idOpera,
+    @GetMapping("/Catalog/{idAsta}/Asta/{idOpera}")
+    public String asta(@PathVariable String idAsta,
+                       @PathVariable String idOpera,
                         Model model) {
 
         Utente utente = authenticationService.getUser();
         String name = utente.getNome();
         String role = utente.getRuolo().getName();
 
-        Opera opera = opereRepository.findById(idOpera).orElseThrow();
+        Asta asta = asteRepository.findById(idAsta).orElseThrow();
 
-        model.addAttribute("name", name);
-        model.addAttribute("role", role);
-        model.addAttribute("opera", opera);
+        if(asta.getStato() == StatoAsta.IN_CORSO){
 
-        return "asta";
+            Opera opera = opereRepository.findById(idOpera).orElseThrow();
+
+            Pageable pageable = PageRequest.of(0, 10, Sort.Direction.DESC,"valore");
+            Page<Offerta> offerte = offerteRepository.findByIdOpera(idOpera, pageable);
+
+            Date dataFine = asta.getDataFine();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+
+            model.addAttribute("name", name);
+            model.addAttribute("role", role);
+            model.addAttribute("opera", opera);
+            model.addAttribute("offerte", offerte);
+            model.addAttribute("dataFine", dataFine);
+            model.addAttribute("dateFormat", dateFormat);
+
+            return "asta";
+        }
+
+        else{
+            return "redirect:/Catalog/" + idAsta;
+        }
+
     }
+
+    @PostMapping("/Catalog/{idAsta}/Asta/{idOpera}")
+    public String offerta(@PathVariable String idAsta,
+                          @PathVariable String idOpera,
+                          @RequestParam Integer value) {
+
+        Utente utente = authenticationService.getUser();
+        String role = utente.getRuolo().getName();
+
+        Asta asta = asteRepository.findById(idAsta).orElseThrow();
+
+        if(asta.getStato() == StatoAsta.IN_CORSO){
+
+            String email = utente.getEmail();
+
+            try {
+                transactionService.makeOffer(email, idOpera, value);
+            }
+            catch (Exception e){
+                System.out.println("Transazione concorrente: "+ value);
+            }
+
+            return "redirect:/Catalog/" + idAsta + "/Asta/" + idOpera;
+        }
+
+        else{
+            return "redirect:/Catalog/" + idAsta;
+        }
+
+    }
+
 
 
 }

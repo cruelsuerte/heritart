@@ -12,12 +12,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class HeritartApplication implements CommandLineRunner{
 
-	@Autowired
-	OpereRepository opereRepository;
-
-	@Autowired
-	AsteRepository asteRepository;
-
 	public static void main(String[] args) {
 		SpringApplication.run(HeritartApplication.class, args);
 	}

@@ -151,7 +151,7 @@ public class Opera {
         this.stato = stato;
     }
 
-    public String getAsta() {
+    public String getIdAsta() {
         return idAsta;
     }
 

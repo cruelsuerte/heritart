@@ -1,9 +1,15 @@
 package com.heritart.utils;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.MultipartConfigFactory;
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.MongoDatabaseFactory;
+import org.springframework.data.mongodb.MongoTransactionManager;
+import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,25 +17,42 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import javax.servlet.MultipartConfigElement;
-
 
 @Configuration
+@EnableMongoRepositories(basePackages = "com.heritart")
+@EnableTransactionManagement
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true)
-public class SecurityConfig {
+public class HeritartConfig extends AbstractMongoClientConfiguration {
 
-    @Autowired
-    AuthenticationService authenticationService;
+    @Bean
+    MongoTransactionManager transactionManager(MongoDatabaseFactory dbFactory) {
+        return new MongoTransactionManager(dbFactory);
+    }
+
+    @Override
+    protected String getDatabaseName() {
+        return "heritArt";
+    }
+
+    @Override
+    public MongoClient mongoClient() {
+        final ConnectionString connectionString = new ConnectionString("mongodb+srv://cruel:cruel@heritart.6nvzoik.mongodb.net/");
+        final MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
+                .applyConnectionString(connectionString)
+                .build();
+        return MongoClients.create(mongoClientSettings);
+    }
 
     @Bean
     public AuthenticationManager customAuthenticationManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject
                 (AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(authenticationService)
+        authenticationManagerBuilder.userDetailsService(new AuthenticationService())
                 .passwordEncoder(bCryptPasswordEncoder());
         return authenticationManagerBuilder.build();
     }
@@ -55,7 +78,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/","/general/**","/error","/logout","/loginFailure",
                             "/newCliente","/newGestore","/Confirm/**","/Resend/**").permitAll()
-                .antMatchers("/Home","/Catalog/**","/Asta/**").hasAnyAuthority("GESTORE","CLIENTE")
+                .antMatchers("/Home","/Catalog/**").hasAnyAuthority("GESTORE","CLIENTE")
                 .antMatchers("/Gestore/**").hasAuthority("GESTORE")
                 .anyRequest().authenticated()
                 .and()
