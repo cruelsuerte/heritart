@@ -126,7 +126,8 @@
             </p>
             <p class="ps-4" th:text="${opera.descrizione}" style="overflow: scroll; height: 75px; text-align: left;"></p>
             <div class="pt-2" style="display: flex; justify-content: center; align-items: center;" th:classappend="${role == 'Cliente' ? 'mb-4' : 'mb-5'}">
-                <form th:if="${role == 'Cliente'}" class="w-50" th:action="@{/Catalog/{idAsta}/Asta/{idOpera}(idAsta=${opera.idAsta},idOpera=${opera.id})}" method="post" >
+                <!--th:if="${role == 'Cliente'}"-->
+                <form class="w-50" th:action="@{/Catalog/{idAsta}/Asta/{idOpera}(idAsta=${opera.idAsta},idOpera=${opera.id})}" method="post" >
                     <label for="value" class="form-label" th:text="'Ultima migliore offerta: ' + ${opera.minOfferta} + ' €'"></label>
                     <div class="input-group input-group-lg">
                         <span class="input-group-text">€</span>
@@ -169,6 +170,12 @@
 
 
 </div>
+<div th:if="${error}" class="alert alert-danger w-50 mx-auto" role="alert">
+    <span th:text="${error}"></span>
+</div>
+<div th:if="${success}" class="alert alert-success w-50 mx-auto" role="alert">
+    <span th:text="${success}"></span>
+</div>
 
 
 </body>
@@ -198,24 +205,27 @@
 </script>
 <script th:inline="javascript">
     var date = /*[[${dataFine.getTime()}]]*/ "";
+    var idAsta = /*[[${idAsta}]]*/ "";
 
-    var x = setInterval(function() {
+    var expiration = setInterval(function() {
 
-      var now = new Date().getTime();
+           var now = new Date().getTime();
+           var distance = date - now;
 
-      var distance = date - now;
+           var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+           var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+           var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+           var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+           document.getElementById("data").innerHTML = days + "d " + hours + "h "
+           + minutes + "m " + seconds + "s ";
 
-      document.getElementById("data").innerHTML = days + "d " + hours + "h "
-      + minutes + "m " + seconds + "s ";
-
-      if (distance < 0) {
-        clearInterval(x);
-      }
+           if (distance < 0) {
+              document.getElementById("data").innerHTML = "ora";
+              clearInterval(expiration);
+              window.location.replace("/Catalog/" + idAsta);
+           }
 
     }, 1000);
+
 </script>

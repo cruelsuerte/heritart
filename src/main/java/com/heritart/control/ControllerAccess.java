@@ -23,20 +23,19 @@ import javax.validation.constraints.NotBlank;
 
 @Controller
 @Validated
-public class ControllerAccess {
+public class ControllerAccess{
     @Autowired
     UtentiRepository utentiRepository;
 
     @Autowired
     TokenRepository tokenRepository;
 
-    @Autowired
-    TransactionService transactionService;
-
     @GetMapping("/")
     public String login() {
         return "login";
     }
+
+
 
 
 
@@ -74,16 +73,15 @@ public class ControllerAccess {
                              @RequestParam("tel-cl") @NotBlank String telefono,
                              RedirectAttributes redirectAttributes){
 
-        Utente utente = new Utente(email, new BCryptPasswordEncoder().encode(password), nome, cognome, Ruolo.CLIENTE);
-        String indirizzo = via + ", " + citta + ", " + paese + ", " + cap;
-        utente.setIndirizzo(indirizzo);
-        utente.setTelefono(telefono);
-
-        boolean newUser = transactionService.newUser(utente);
-
-        if(newUser){
+        if (!utentiRepository.isRegistered(email)){
+            Utente utente = new Utente(email, new BCryptPasswordEncoder().encode(password), nome, cognome, Ruolo.CLIENTE);
+            String indirizzo = via + ", " + citta + ", " + paese + ", " + cap;
+            utente.setIndirizzo(indirizzo);
+            utente.setTelefono(telefono);
+            utentiRepository.save(utente);
             newRegistration(email, redirectAttributes);
         }
+
         else {
             redirectAttributes.addFlashAttribute("error", "L'utente " + email + " è già registrato.");
         }
@@ -99,11 +97,9 @@ public class ControllerAccess {
                              @RequestParam("cognome-ge") @NotBlank String cognome,
                              RedirectAttributes redirectAttributes){
 
-        Utente utente = new Utente(email, new BCryptPasswordEncoder().encode(password), nome, cognome, Ruolo.GESTORE);
-
-        boolean newUser = transactionService.newUser(utente);
-
-        if(newUser){
+        if (!utentiRepository.isRegistered(email)){
+            Utente utente = new Utente(email, new BCryptPasswordEncoder().encode(password), nome, cognome, Ruolo.GESTORE);
+            utentiRepository.save(utente);
             newRegistration(email, redirectAttributes);
         }
 

@@ -17,7 +17,7 @@ import javax.validation.Path;
 import java.util.Iterator;
 
 @ControllerAdvice
-public class ErrorHandler implements ErrorController {
+public class ErrorHandler {
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public String MaxUploadSizeExceededException(HttpServletRequest request,

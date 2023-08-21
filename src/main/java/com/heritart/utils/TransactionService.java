@@ -14,24 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(isolation = Isolation.SERIALIZABLE)
 public class TransactionService {
-
-    @Autowired
-    UtentiRepository utentiRepository;
     @Autowired
     OpereRepository opereRepository;
     @Autowired
     OfferteRepository offerteRepository;
-
-    public boolean newUser(Utente utente){
-        String email = utente.getEmail();
-        boolean newUser = !utentiRepository.isRegistered(email);
-
-        if(newUser){
-            utentiRepository.save(utente);
-        }
-
-        return newUser;
-    }
 
     public void makeOffer(String email, String idOpera, Integer value){
 

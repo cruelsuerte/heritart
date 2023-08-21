@@ -23,7 +23,6 @@ import java.util.List;
 public class Opera {
     @Id
     private String id;
-    @Indexed(unique = true)
     private String titolo;
     private String artista;
     private Integer annoCreazione;

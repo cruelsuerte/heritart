@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 
 @Configuration
+@EnableScheduling
 @EnableMongoRepositories(basePackages = "com.heritart")
 @EnableTransactionManagement
 @EnableWebSecurity
@@ -37,6 +39,11 @@ public class HeritartConfig extends AbstractMongoClientConfiguration {
     @Override
     protected String getDatabaseName() {
         return "heritArt";
+    }
+
+    @Override
+    protected boolean autoIndexCreation() {
+        return true;
     }
 
     @Override

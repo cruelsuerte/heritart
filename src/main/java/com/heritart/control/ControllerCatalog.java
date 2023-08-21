@@ -7,6 +7,7 @@ import com.heritart.model.aste.Asta;
 import com.heritart.model.aste.StatoAsta;
 import com.heritart.model.offerte.Offerta;
 import com.heritart.model.opere.Opera;
+import com.heritart.model.utenti.Ruolo;
 import com.heritart.model.utenti.Utente;
 import com.heritart.utils.AuthenticationService;
 import com.heritart.utils.TransactionService;
@@ -21,9 +22,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 public class ControllerCatalog {
@@ -46,14 +49,14 @@ public class ControllerCatalog {
 
         Utente utente = authenticationService.getUser();
         String name = utente.getNome();
-        String role = utente.getRuolo().getName();
+        Ruolo role = utente.getRuolo();
 
         Pageable pageable = PageRequest.of(page, 8, Sort.Direction.DESC,"dataInizio");
         Page<Asta> aste = asteRepository.findAll(pageable);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 
         model.addAttribute("name", name);
-        model.addAttribute("role", role);
+        model.addAttribute("role", role.getName());
         model.addAttribute("aste", aste);
         model.addAttribute("currentPage", page);
         model.addAttribute("dateFormat", dateFormat);
@@ -68,18 +71,18 @@ public class ControllerCatalog {
 
         Utente utente = authenticationService.getUser();
         String name = utente.getNome();
-        String role = utente.getRuolo().getName();
+        Ruolo role = utente.getRuolo();
 
         Pageable pageable = PageRequest.of(page, 8, Sort.Direction.ASC,"titolo");
-        Page<Opera> opere = opereRepository.findByIdAsta(idAsta, pageable);
+        Page<Opera> opere = opereRepository.findByIdAstaPages(idAsta, pageable);
 
         Asta asta = asteRepository.findById(idAsta).orElseThrow();
-        String stato = asta.getStato().getName();
+        StatoAsta stato = asta.getStato();
 
         model.addAttribute("name", name);
-        model.addAttribute("role", role);
+        model.addAttribute("role", role.getName());
         model.addAttribute("idAsta", idAsta);
-        model.addAttribute("stato", stato);
+        model.addAttribute("stato", stato.getName());
         model.addAttribute("opere", opere);
         model.addAttribute("currentPage", page);
 
@@ -94,7 +97,7 @@ public class ControllerCatalog {
 
         Utente utente = authenticationService.getUser();
         String name = utente.getNome();
-        String role = utente.getRuolo().getName();
+        Ruolo role = utente.getRuolo();
 
         Asta asta = asteRepository.findById(idAsta).orElseThrow();
 
@@ -102,14 +105,16 @@ public class ControllerCatalog {
 
             Opera opera = opereRepository.findById(idOpera).orElseThrow();
 
-            Pageable pageable = PageRequest.of(0, 10, Sort.Direction.DESC,"valore");
-            Page<Offerta> offerte = offerteRepository.findByIdOpera(idOpera, pageable);
+            //Pageable pageable = PageRequest.of(0, 10, Sort.Direction.DESC,"valore");
+            //Page<Offerta> offerte = offerteRepository.findByIdOpera(idOpera, pageable);
+
+            List<Offerta> offerte = offerteRepository.findFirst10ByIdOperaOrderByValoreDesc(idOpera);
 
             Date dataFine = asta.getDataFine();
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 
             model.addAttribute("name", name);
-            model.addAttribute("role", role);
+            model.addAttribute("role", role.getName());
             model.addAttribute("opera", opera);
             model.addAttribute("offerte", offerte);
             model.addAttribute("dataFine", dataFine);
@@ -127,23 +132,38 @@ public class ControllerCatalog {
     @PostMapping("/Catalog/{idAsta}/Asta/{idOpera}")
     public String offerta(@PathVariable String idAsta,
                           @PathVariable String idOpera,
-                          @RequestParam Integer value) {
+                          @RequestParam Integer value,
+                          RedirectAttributes redirectAttributes) {
 
         Utente utente = authenticationService.getUser();
-        String role = utente.getRuolo().getName();
+        Ruolo role = utente.getRuolo();
 
         Asta asta = asteRepository.findById(idAsta).orElseThrow();
 
-        if(asta.getStato() == StatoAsta.IN_CORSO){
+        if(asta.getStato() == StatoAsta.IN_CORSO
+//           && role == Ruolo.CLIENTE
+           ){
 
             String email = utente.getEmail();
+            Offerta lastOffer = offerteRepository.findFirstByIdOperaOrderByValoreDesc(idOpera);
 
-            try {
-                transactionService.makeOffer(email, idOpera, value);
-            }
-            catch (Exception e){
-                System.out.println("Transazione concorrente: "+ value);
-            }
+//            if(lastOffer == null || !email.equals(lastOffer.getEmail())){
+                try {
+                    transactionService.makeOffer(email, idOpera, value);
+                    redirectAttributes.addFlashAttribute("success",
+                            "Nuova offerta presentata con successo.");
+                }
+                catch (Exception e){
+                    redirectAttributes.addFlashAttribute("error",
+                            "Una nuova offerta è stata presentata durante la tua richiesta. Rinvia una nuova offerta.");
+                }
+//            }
+//
+//            else{
+//                redirectAttributes.addFlashAttribute("error",
+//                        "Hai già presentato l'ultima migliore offerta. Attendi una nuova offerta.");
+//            }
+
 
             return "redirect:/Catalog/" + idAsta + "/Asta/" + idOpera;
         }

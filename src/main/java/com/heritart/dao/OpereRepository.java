@@ -8,7 +8,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface OpereRepository extends MongoRepository<Opera, String> {
 
@@ -18,7 +17,10 @@ public interface OpereRepository extends MongoRepository<Opera, String> {
     @Query("{stato:'?0'}")
     List<Opera> findByStato(StatoOpera stato);
 
-    @Query("{idAsta:'?0', stato: 'ASTA'}")
-    Page<Opera> findByIdAsta(String idAsta, Pageable pageable);
+    @Query("{idAsta:'?0'}")
+    List<Opera> findByIdAsta(String idAsta);
+
+    @Query("{idAsta:'?0'}")
+    Page<Opera> findByIdAstaPages(String idAsta, Pageable pageable);
 
 }

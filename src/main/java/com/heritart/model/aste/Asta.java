@@ -16,7 +16,7 @@ import java.util.Date;
 @Document("aste")
 public class Asta {
     private @Id String id;
-    private @Indexed(unique = true) String titolo;
+    private String titolo;
     private String idGestore;
     private String descrizione;
     private Date dataInizio;
@@ -81,12 +81,12 @@ public class Asta {
 
     public boolean isInCorso(){
         Date now = new Date();
-        return now.after(this.dataInizio);
+        return (stato == StatoAsta.PROGRAMMATA && now.after(dataInizio));
     }
 
     public boolean isTerminata(){
         Date now = new Date();
-        return now.after(this.dataFine);
+        return (stato == StatoAsta.IN_CORSO && now.after(dataFine));
     }
 
 

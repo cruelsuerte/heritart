@@ -42,7 +42,6 @@ public class MailSender {
             message.setSubject(subject);
             message.setText(text);
             Transport.send(message);
-            System.out.println("Message sent");
         }
 
         catch (MessagingException mex) {
