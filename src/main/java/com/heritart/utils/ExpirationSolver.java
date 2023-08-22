@@ -37,6 +37,7 @@ public class ExpirationSolver {
 
             if(asta.isInCorso()){
                 asta.setStato(StatoAsta.IN_CORSO);
+                asteRepository.save(asta);
             }
 
             if(asta.isTerminata()){
@@ -53,7 +54,6 @@ public class ExpirationSolver {
 
                     if(bestOffer != null){
                         opera.setStato(StatoOpera.AGGIUDICATA);
-                        opereRepository.save(opera);
 
                         String titoloOpera = opera.getTitolo();
                         String email = bestOffer.getEmail();
@@ -66,6 +66,7 @@ public class ExpirationSolver {
                         opera.setStato(StatoOpera.DISPONIBILE);
                     }
 
+                    opereRepository.save(opera);
                 }
 
             }

@@ -146,8 +146,8 @@ public class ControllerGestore {
 
     @PostMapping("/Gestore/newAsta")
     public String newAsta(@RequestParam @NotBlank String titolo,
-                          @RequestParam("dataInizio") @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") @Future Date start,
-                          @RequestParam("dataFine") @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") @Future Date end,
+                          @RequestParam("dataInizio") @Future Date start,
+                          @RequestParam("dataFine") @Future Date end,
                           @RequestParam List<String> opere,
                           @RequestParam(required = false) String descrizione,
                           @RequestParam(required = false) MultipartFile file,

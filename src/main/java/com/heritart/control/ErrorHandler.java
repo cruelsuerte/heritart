@@ -1,5 +1,6 @@
 package com.heritart.control;
 
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -17,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Path;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 
 @ControllerAdvice
@@ -35,7 +38,9 @@ public class ErrorHandler {
     @InitBinder
     public void initBinder(WebDataBinder dataBinder) {
         StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(false);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
         dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
+        dataBinder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat,false));
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
