@@ -15,6 +15,9 @@ public interface AsteRepository extends MongoRepository<Asta, String> {
     @Query("{stato:'?0'}")
     List<Asta> findByStato(StatoAsta stato);
 
+    @Query(value="{$and: [{ $or : [ { $expr: { $eq: ['?0', ''] } } , { titolo : {$regex : ?0, $options: 'i'} } ] }, { $or : [ { $expr: { $eq: ['?1', 'null'] } } , { stato : ?1 } ] } ]}")
+    List<Asta> findByTitoloAndStato(String titolo, StatoAsta stato);
+
 
 
 }

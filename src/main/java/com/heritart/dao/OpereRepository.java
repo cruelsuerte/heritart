@@ -23,4 +23,9 @@ public interface OpereRepository extends MongoRepository<Opera, String> {
     @Query("{idAsta:'?0'}")
     Page<Opera> findByIdAstaPages(String idAsta, Pageable pageable);
 
+    @Query(value="{$or :[{titolo: {$regex : ?0, $options: 'i'}}," +
+                        "{artista: {$regex : ?0, $options: 'i'}}," +
+                        "{correnteArtistica: {$regex : ?0, $options: 'i'}}]}")
+    List<Opera> findByTitoloOrArtistaOrCorrenteArtistica(String search);
+
 }

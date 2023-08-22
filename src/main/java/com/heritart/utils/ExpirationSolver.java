@@ -28,66 +28,66 @@ public class ExpirationSolver {
     @Autowired
     OfferteRepository offerteRepository;
 
-//    @Scheduled(fixedDelay = 1000, initialDelay = 1000)
-//    public void checkAste(){
-//
-//        List<Asta> aste = asteRepository.findAll();
-//
-//        for (Asta asta : aste) {
-//
-//            if(asta.isInCorso()){
-//                asta.setStato(StatoAsta.IN_CORSO);
-//            }
-//
-//            if(asta.isTerminata()){
-//                asta.setStato(StatoAsta.TERMINATA);
-//                asteRepository.save(asta);
-//
-//                String idAsta = asta.getId();
-//                String titoloAsta = asta.getTitolo();
-//                List<Opera> opere = opereRepository.findByIdAsta(idAsta);
-//
-//                for (Opera opera : opere) {
-//                    String idOpera = opera.getId();
-//                    Offerta bestOffer = offerteRepository.findFirstByIdOperaOrderByValoreDesc(idOpera);
-//
-//                    if(bestOffer != null){
-//                        opera.setStato(StatoOpera.AGGIUDICATA);
-//                        opereRepository.save(opera);
-//
-//                        String titoloOpera = opera.getTitolo();
-//                        String email = bestOffer.getEmail();
-//                        Integer valore = bestOffer.getValore();
-//                        newSale(titoloAsta, titoloOpera, email, valore);
-//
-//                    }
-//
-//                    else{
-//                        opera.setStato(StatoOpera.DISPONIBILE);
-//                    }
-//
-//                }
-//
-//            }
-//
-//        }
-//
-//    }
-//
-//    @Scheduled(fixedDelay = 60000, initialDelay = 60000)
-//    public void checkVerificationToken(){
-//
-//        List<VerificationToken> tokenList = tokenRepository.findAll();
-//
-//        for (VerificationToken token : tokenList) {
-//            if(token.isExpired()){
-//                String idToken = token.getId();
-//                tokenRepository.deleteById(idToken);
-//            }
-//
-//        }
-//
-//    }
+    @Scheduled(fixedDelay = 1000, initialDelay = 1000)
+    public void checkAste(){
+
+        List<Asta> aste = asteRepository.findAll();
+
+        for (Asta asta : aste) {
+
+            if(asta.isInCorso()){
+                asta.setStato(StatoAsta.IN_CORSO);
+            }
+
+            if(asta.isTerminata()){
+                asta.setStato(StatoAsta.TERMINATA);
+                asteRepository.save(asta);
+
+                String idAsta = asta.getId();
+                String titoloAsta = asta.getTitolo();
+                List<Opera> opere = opereRepository.findByIdAsta(idAsta);
+
+                for (Opera opera : opere) {
+                    String idOpera = opera.getId();
+                    Offerta bestOffer = offerteRepository.findFirstByIdOperaOrderByValoreDesc(idOpera);
+
+                    if(bestOffer != null){
+                        opera.setStato(StatoOpera.AGGIUDICATA);
+                        opereRepository.save(opera);
+
+                        String titoloOpera = opera.getTitolo();
+                        String email = bestOffer.getEmail();
+                        Integer valore = bestOffer.getValore();
+                        newSale(titoloAsta, titoloOpera, email, valore);
+
+                    }
+
+                    else{
+                        opera.setStato(StatoOpera.DISPONIBILE);
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+    @Scheduled(fixedDelay = 60000, initialDelay = 60000)
+    public void checkVerificationToken(){
+
+        List<VerificationToken> tokenList = tokenRepository.findAll();
+
+        for (VerificationToken token : tokenList) {
+            if(token.isExpired()){
+                String idToken = token.getId();
+                tokenRepository.deleteById(idToken);
+            }
+
+        }
+
+    }
 
     public void newSale(String asta, String opera, String email, Integer valore){
         MailSender mailSender = new MailSender("heritart.noreply@gmail.com","smtp.gmail.com","axqoblnhehpubpbg");

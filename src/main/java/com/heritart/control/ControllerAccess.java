@@ -23,7 +23,7 @@ import javax.validation.constraints.NotBlank;
 
 @Controller
 @Validated
-public class ControllerAccess{
+public class ControllerAccess implements ErrorController{
     @Autowired
     UtentiRepository utentiRepository;
 
@@ -36,7 +36,10 @@ public class ControllerAccess{
     }
 
 
-
+    @GetMapping("/error")
+    public String error() {
+        return "redirect:/";
+    }
 
 
     @PostMapping("/loginFailure")

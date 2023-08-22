@@ -83,7 +83,7 @@ public class ControllerGestore {
                            @RequestParam(required = false) Materiale materiale,
                            @RequestParam(defaultValue = "0") @Min(0) Integer baseAsta,
                            @RequestParam(required = false) @Size(max = 6) MultipartFile[] files,
-                           RedirectAttributes redirectAttributes) throws ParseException, IOException {
+                           RedirectAttributes redirectAttributes) throws IOException {
 
 
         Opera opera = new Opera(titolo, artista, anno, provenienza, tipologia, proprieta, condizioni);
