@@ -131,7 +131,7 @@ public class ControllerGestore {
     }
 
     @GetMapping("/Gestore/newAsta")
-    public String aste(Model model){
+    public String asta(Model model){
 
         Utente utente = authenticationService.getUser();
         String name = utente.getNome();

@@ -47,8 +47,9 @@ public class ControllerAsta {
         Ruolo role = utente.getRuolo();
 
         Asta asta = asteRepository.findById(idAsta).orElseThrow();
+        StatoAsta stato = asta.getStato();
 
-        if(asta.getStato() == StatoAsta.IN_CORSO){
+        if(stato != StatoAsta.PROGRAMMATA){
 
             Opera opera = opereRepository.findById(idOpera).orElseThrow();
 
@@ -59,6 +60,7 @@ public class ControllerAsta {
 
             model.addAttribute("name", name);
             model.addAttribute("role", role.getName());
+            model.addAttribute("stato", stato.getName());
             model.addAttribute("opera", opera);
             model.addAttribute("offerte", offerte);
             model.addAttribute("dataFine", dataFine);
@@ -111,12 +113,9 @@ public class ControllerAsta {
 //            }
 
 
-            return "redirect:/Catalog/" + idAsta + "/Asta/" + idOpera;
         }
 
-        else{
-            return "redirect:/Catalog/" + idAsta;
-        }
+        return "redirect:/Catalog/" + idAsta + "/Asta/" + idOpera;
 
     }
 

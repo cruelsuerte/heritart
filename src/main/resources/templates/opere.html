@@ -79,8 +79,8 @@
                         <div class="col-md-6">
                                 <p class="card-text">
                                     <span th:if="${opera.minOfferta} != 0" th:utext="'Ultima offerta:<br>' + ${opera.minOfferta} + ' €'"></span><br>
-                                    <a th:if="${stato} == 'In corso'" th:href="@{/Catalog/{idAsta}/Asta/{idOpera}(idAsta=${idAsta},idOpera=${opera.id})}" class="btn btn-primary btn-lg mt-1">Partecipa</a>
-                                    <span th:if="(${stato} == 'In programma') or (${stato} == 'Terminata')" th:style="${stato == 'Terminata' ? 'color: red' : ''}" th:text="${stato}" class="fw-bold" ></span>
+                                    <span th:if="(${stato} == 'In programma')" th:text="${stato}" class="fw-bold"></span>
+                                    <a th:unless="${stato} == 'In programma'" th:href="@{/Catalog/{idAsta}/Asta/{idOpera}(idAsta=${idAsta},idOpera=${opera.id})}" class="btn btn-primary btn-lg mt-1">Accedi</a>
                                 </p>
                         </div>
                     </div>

@@ -131,7 +131,7 @@ public class Opera {
     public void addPhoto(MultipartFile file) throws IOException {
         Binary binPhoto = new Binary(BsonBinarySubType.BINARY, file.getBytes());
         String photo = Base64.getEncoder().encodeToString(binPhoto.getData());
-        this.photoList.add(photo);
+        photoList.add(photo);
     }
 
     public Integer getMinOfferta() {
@@ -155,7 +155,7 @@ public class Opera {
     }
 
     public void setAsta(String idAsta) {
-        if(this.stato == StatoOpera.DISPONIBILE){
+        if(stato == StatoOpera.DISPONIBILE){
             setStato(StatoOpera.ASTA);
             this.idAsta = idAsta;
         }
