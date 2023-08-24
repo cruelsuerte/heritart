@@ -7,26 +7,15 @@ import com.heritart.model.aste.Asta;
 import com.heritart.model.opere.*;
 import com.heritart.model.utenti.Utente;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.io.IOException;
 import java.text.ParseException;
@@ -114,7 +103,7 @@ public class ControllerGestore {
         }
 
         if(baseAsta > 0){
-            opera.setMinOfferta(baseAsta);
+            opera.setOfferta(baseAsta);
         }
 
         if(files.length > 0){
@@ -186,7 +175,7 @@ public class ControllerGestore {
             }
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            SimpleDateFormat hourFormat = new SimpleDateFormat("hh:mm");
+            SimpleDateFormat hourFormat = new SimpleDateFormat("HH:mm");
             String dataInizio = dateFormat.format(start);
             String oreInizio = hourFormat.format(start);
             String dataFine = dateFormat.format(end);

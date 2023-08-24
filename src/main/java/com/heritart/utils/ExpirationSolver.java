@@ -53,13 +53,14 @@ public class ExpirationSolver {
                     Offerta bestOffer = offerteRepository.findFirstByIdOperaOrderByValoreDesc(idOpera);
 
                     if(bestOffer != null){
-                        opera.setStato(StatoOpera.AGGIUDICATA);
-
                         String titoloOpera = opera.getTitolo();
                         String email = bestOffer.getEmail();
                         Integer valore = bestOffer.getValore();
-                        newSale(titoloAsta, titoloOpera, email, valore);
 
+                        opera.setOfferta(valore);
+                        opera.setStato(StatoOpera.AGGIUDICATA);
+
+                        newSale(titoloAsta, titoloOpera, email, valore);
                     }
 
                     else{

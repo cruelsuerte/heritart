@@ -24,6 +24,9 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{'/Home'}">Home</a>
                 </li>
+                <li th:if="${role == 'Cliente'}" class="nav-item">
+                    <a class="nav-link" th:href="@{'/myCollection'}">myCollection</a>
+                </li>
                 <li th:if="${role == 'Gestore'}" class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Aggiungi
@@ -51,7 +54,7 @@
 <div class="container my-4" style="text-align: center">
     <img src="/general/heritart-logo.png">
 </div>
-<div class="container px-5 py-2 mx-auto my-3" style="width: 850px; text-align: center">
+<div th:if="${!opere.empty}" class="container px-5 py-2 mx-auto my-3" style="width: 850px; text-align: center">
 
     <div class="card mb-4 border-primary" th:each="opera: ${opere.content}">
         <div class="row g-0">
@@ -78,9 +81,11 @@
                         </div>
                         <div class="col-md-6">
                                 <p class="card-text">
-                                    <span th:if="${opera.minOfferta} != 0" th:utext="'Ultima offerta:<br>' + ${opera.minOfferta} + ' €'"></span><br>
+                                    <span th:if="${opera.offerta} != 0" th:utext="'Offerta minima:<br>' + ${opera.offerta} + ' €'">
+                                        <span th:text="${asta.stato.name == 'In corso' ? 'color: green' : ''}"></span>
+                                    </span><br>
                                     <span th:if="(${stato} == 'In programma')" th:text="${stato}" class="fw-bold"></span>
-                                    <a th:unless="${stato} == 'In programma'" th:href="@{/Catalog/{idAsta}/Asta/{idOpera}(idAsta=${idAsta},idOpera=${opera.id})}" class="btn btn-primary btn-lg mt-1">Accedi</a>
+                                    <a th:unless="${stato} == 'In programma'" th:href="@{/Catalog/{idAsta}/Asta/{idOpera}(idAsta=${idAsta},idOpera=${opera.id})}" class="btn btn-primary btn-lg mt-1">Asta</a>
                                 </p>
                         </div>
                     </div>
@@ -90,7 +95,7 @@
     </div>
 
 
-    <nav>
+    <nav th:if="${!opere.empty}">
         <ul class="pagination justify-content-center">
             <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
                 <a class="page-link" th:href="@{/Catalog/{idAsta}(idAsta=${idAsta},page=0)}">First</a>

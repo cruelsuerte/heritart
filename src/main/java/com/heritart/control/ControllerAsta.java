@@ -56,7 +56,7 @@ public class ControllerAsta {
             List<Offerta> offerte = offerteRepository.findFirst10ByIdOperaOrderByValoreDesc(idOpera);
 
             Date dataFine = asta.getDataFine();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
             model.addAttribute("name", name);
             model.addAttribute("role", role.getName());

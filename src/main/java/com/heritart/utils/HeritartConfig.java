@@ -87,6 +87,7 @@ public class HeritartConfig extends AbstractMongoClientConfiguration {
                             "/newCliente","/newGestore","/Confirm/**","/Resend/**").permitAll()
                 .antMatchers("/Home","/Catalog/**").hasAnyAuthority("GESTORE","CLIENTE")
                 .antMatchers("/Gestore/**").hasAuthority("GESTORE")
+                .antMatchers("/myCollection/**").hasAuthority("CLIENTE")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

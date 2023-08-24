@@ -75,7 +75,7 @@ public class ControllerCatalog {
 
         Pageable pageable = PageRequest.of(page, 8, Sort.Direction.DESC,"dataInizio");
         Page<Asta> astePages = new PageImpl<>(aste, pageable, aste.size());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
         model.addAttribute("name", name);
         model.addAttribute("role", role.getName());

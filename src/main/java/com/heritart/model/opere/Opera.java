@@ -2,18 +2,11 @@ package com.heritart.model.opere;
 
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.io.IOException;
-import java.text.ParseException;
 
 import java.util.ArrayList;
 import java.util.Base64;
@@ -36,7 +29,7 @@ public class Opera {
     private Materiale materiale;
     private Condizioni condizioni;
     private List<String> photoList= new ArrayList<>();
-    private Integer minOfferta;
+    private Integer offerta;
     private StatoOpera stato;
     private String idAsta;
 
@@ -49,7 +42,7 @@ public class Opera {
         this.tipologia = tipologia;
         this.proprieta = proprieta;
         this.condizioni = condizioni;
-        this.minOfferta = 0;
+        this.offerta = 0;
         this.stato = StatoOpera.DISPONIBILE;
     }
 
@@ -134,12 +127,12 @@ public class Opera {
         photoList.add(photo);
     }
 
-    public Integer getMinOfferta() {
-        return minOfferta;
+    public Integer getOfferta() {
+        return offerta;
     }
 
-    public void setMinOfferta(Integer minOfferta) {
-        this.minOfferta = minOfferta;
+    public void setOfferta(Integer offerta) {
+        this.offerta = offerta;
     }
 
     public StatoOpera getStato() {

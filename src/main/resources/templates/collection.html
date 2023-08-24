@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+  <title>HeritArt</title>
+</head>
+
+<body style="background: url('/general/background.png');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  min-height: 100vh">
+<nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand">HeritArt</a>
+    <div class="collapse navbar-collapse">
+
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex">
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{'/Home'}">Home</a>
+        </li>
+        <li th:if="${role == 'Cliente'}" class="nav-item">
+          <a class="nav-link active" th:href="@{'/myCollection'}">myCollection</a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex">
+        <li class="nav-item">
+          <a class="nav-link"><span class="bi bi-person-fill"></span> <span th:text="${name}"></span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{'/logout'}"><span class="bi bi-door-open-fill"></span> Logout</a>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+<div class="container my-4" style="text-align: center">
+  <img src="/general/heritart-logo.png">
+</div>
+<div th:if="${error}" class="alert alert-danger w-25 mx-auto" role="alert">
+  <span th:text="${error}"></span>
+</div>
+<div th:if="${!opere.empty}" class="container px-5 py-2 mx-auto my-3" style="width: 850px; text-align: center">
+
+  <div class="card mb-4 border-primary" th:each="opera: ${opere.content}">
+    <div class="row g-0">
+      <div class="col-md-5 ps-3" style="display: flex;">
+        <img class="img-fluid" th:src="|data:image/png;base64,${opera.photoList.get(0)}|" style="margin: auto; max-height: 220px;">
+      </div>
+      <div class="col-md-7">
+        <div class="card-body">
+          <h3 class="card-title"th:text="${opera.titolo}">Titolo</h3>
+          <p class="card-text">
+            <span th:text="${opera.artista}"></span>, <span th:text="${opera.annoCreazione}"></span>
+            &ensp;-&ensp;
+            <span th:text="${opera.provenienza}"></span>, <span th:text="${opera.proprieta.name}"></span>
+          </p>
+          <div class="row">
+            <div class="col-md-6">
+              <p class="card-text text-muted" style="text-align: left;">
+                <span th:text="${opera.condizioni.name}"></span>
+                <br><span th:text="${opera.dimensioni}"></span>
+                <br><span th:text="${opera.materiale}"></span>
+                <br><span th:text="${opera.tecnica.name}"></span>
+                <br><span th:text="${opera.correnteArtistica.name}"></span>
+              </p>
+            </div>
+            <div class="col-md-6">
+              <p class="card-text">
+                <span th:utext="'Aggiudicata per:<br>' + ${opera.offerta} + ' €'"></span><br>
+                <a th:href="@{/Catalog/{idAsta}/Asta/{idOpera}(idAsta=${opera.idAsta},idOpera=${opera.id})}" class="btn btn-primary btn-lg mt-1">Asta</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <nav th:if="${!opere.empty}">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+        <a class="page-link" th:href="@{/myCollection(page=0)}">First</a>
+      </li>
+      <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+        <a class="page-link" th:href="@{/myCollection(page=${currentPage - 1})}">&laquo;</a>
+      </li>
+      <li class="page-item" th:each="i : ${#numbers.sequence(0, opere.totalPages - 1)}"
+          th:classappend="${currentPage == i ? 'active' : ''}">
+        <a class="page-link" th:href="@{/myCollection(page=${i})}" th:text="${i + 1}"></a>
+      </li>
+      <li class="page-item" th:classappend="${currentPage == opere.totalPages - 1 ? 'disabled' : ''}">
+        <a class="page-link" th:href="@{/myCollection(page=${currentPage + 1})}">&raquo;</a>
+      </li>
+      <li class="page-item" th:classappend="${currentPage == opere.totalPages - 1 ? 'disabled' : ''}">
+        <a class="page-link" th:href="@{/myCollection(page=${opere.totalPages - 1})}">Last</a>
+      </li>
+    </ul>
+  </nav>
+
+</div>
+</body>

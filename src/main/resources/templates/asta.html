@@ -52,6 +52,9 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{'/Home'}">Home</a>
                 </li>
+                <li th:if="${role == 'Cliente'}" class="nav-item">
+                    <a class="nav-link" th:href="@{'/myCollection'}">myCollection</a>
+                </li>
                 <li th:if="${role == 'Gestore'}" class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Aggiungi
@@ -101,8 +104,6 @@
                 </h1>
             </div>
 
-
-
         </div>
 
         <div class="col-md-6">
@@ -123,10 +124,10 @@
             <div class="pt-2 mb-4" style="display: flex; justify-content: center; align-items: center;">
                 <!--th:if="${role == 'Cliente'}"-->
                 <form th:if="${role == 'Cliente'} and ${stato == 'In corso'}" class="w-50" th:action="@{/Catalog/{idAsta}/Asta/{idOpera}(idAsta=${opera.idAsta},idOpera=${opera.id})}" id="sendOffer" method="post" >
-                    <label for="value" class="form-label" th:text="'Ultima migliore offerta: ' + ${opera.minOfferta} + ' €'"></label>
+                    <label th:if="${opera.offerta} != 0" for="value" class="form-label" th:text="'Offerta minima: ' + ${opera.offerta} + ' €'"></label>
                     <div class="input-group input-group-lg">
                         <span class="input-group-text">€</span>
-                        <input type="number" class="form-control" id="value" name="value" th:value="(${opera.minOfferta} + 50)" th:min="(${opera.minOfferta} + 50)" step="50">
+                        <input type="number" class="form-control" id="value" name="value" th:value="${opera.offerta}" th:min="${opera.offerta}" step="50">
                         <button type="submit" class="btn btn-primary">Invia</button>
                     </div>
                 </form>
@@ -156,7 +157,6 @@
             </div>
 
         </div>
-
 
     </div>
 

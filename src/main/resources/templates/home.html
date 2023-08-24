@@ -24,6 +24,9 @@
                 <li class="nav-item">
                     <a class="nav-link active" th:href="@{'/Home'}">Home</a>
                 </li>
+                <li th:if="${role == 'Cliente'}" class="nav-item">
+                    <a class="nav-link" th:href="@{'/myCollection'}">myCollection</a>
+                </li>
                 <li th:if="${role == 'Gestore'}" class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Aggiungi
