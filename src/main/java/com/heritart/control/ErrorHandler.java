@@ -49,7 +49,6 @@ public class ErrorHandler {
                                               RedirectAttributes redirectAttributes) {
 
         ConstraintViolation<?> constraints =  ex.getConstraintViolations().iterator().next();
-        String error = constraints.getMessage();
         Path path = constraints.getPropertyPath();
         Iterator<Path.Node> iter = path.iterator();
         iter.next();
