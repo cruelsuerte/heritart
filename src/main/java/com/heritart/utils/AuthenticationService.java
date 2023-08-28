@@ -11,8 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -28,7 +26,7 @@ public class AuthenticationService implements UserDetailsService {
         Utente utente = utentiRepository.findByEmail(email);
 
         if (utente != null && utente.isEnabled()){
-            List ruolo = Arrays.asList(new SimpleGrantedAuthority(utente.getRuolo().name()));
+            List<SimpleGrantedAuthority> ruolo = List.of(new SimpleGrantedAuthority(utente.getRuolo().name()));
 
             this.utente = utente;
             return new User(utente.getEmail(), utente.getPassword(), ruolo);

@@ -1,10 +1,8 @@
 package com.heritart.model.token;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.util.Calendar;
 import java.util.Date;
 

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import javax.validation.constraints.*;
 import java.io.IOException;
 import java.text.ParseException;
@@ -106,10 +105,8 @@ public class ControllerGestore {
             opera.setOfferta(baseAsta);
         }
 
-        if(files.length > 0){
-            for (MultipartFile file : files) {
-                opera.addPhoto(file);
-            }
+        for (MultipartFile file : files) {
+            opera.addPhoto(file);
         }
 
         opereRepository.save(opera);

@@ -1,30 +1,21 @@
 package com.heritart.control;
 
 import com.heritart.dao.AsteRepository;
-import com.heritart.dao.OfferteRepository;
 import com.heritart.dao.OpereRepository;
 import com.heritart.model.aste.Asta;
 import com.heritart.model.aste.StatoAsta;
-import com.heritart.model.offerte.Offerta;
 import com.heritart.model.opere.Opera;
 import com.heritart.model.utenti.Ruolo;
 import com.heritart.model.utenti.Utente;
 import com.heritart.utils.AuthenticationService;
-import com.heritart.utils.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.thymeleaf.util.StringUtils;
-
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Controller

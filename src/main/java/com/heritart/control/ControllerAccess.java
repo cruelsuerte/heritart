@@ -1,23 +1,18 @@
 package com.heritart.control;
 
-import com.heritart.utils.AuthenticationService;
 import com.heritart.utils.MailSender;
 import com.heritart.dao.TokenRepository;
 import com.heritart.dao.UtentiRepository;
 import com.heritart.model.utenti.Ruolo;
 import com.heritart.model.utenti.Utente;
 import com.heritart.model.token.VerificationToken;
-import com.heritart.utils.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
