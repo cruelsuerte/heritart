@@ -48,7 +48,7 @@ public class HeritartConfig extends AbstractMongoClientConfiguration {
 
     @Override
     public MongoClient mongoClient() {
-        final ConnectionString connectionString = new ConnectionString("mongodb+srv://cruel:cruel@heritart.6nvzoik.mongodb.net/");
+        final ConnectionString connectionString = new ConnectionString("mongodb+srv://cruel:cruel@heritart.dnbe8we.mongodb.net/");
         final MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
                 .build();
