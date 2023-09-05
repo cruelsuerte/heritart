@@ -58,6 +58,7 @@ public class ExpirationSolver {
 
                         opera.setOfferta(valore);
                         opera.setStato(StatoOpera.AGGIUDICATA);
+                        opera.setAcquirente(email);
 
                         newSale(titoloAsta, titoloOpera, email, valore);
                     }

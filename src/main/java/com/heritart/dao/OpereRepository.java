@@ -13,10 +13,10 @@ public interface OpereRepository extends MongoRepository<Opera, String> {
 
     @Query("{titolo:'?0'}")
     Opera findByTitolo(String titolo);
-
     @Query("{stato:'?0'}")
     List<Opera> findByStato(StatoOpera stato);
-
+    @Query("{acquirente:'?0', stato:'AGGIUDICATA'}")
+    List<Opera> findByAcquirente(String acquirente);
     @Query("{idAsta:'?0'}")
     List<Opera> findByIdAsta(String idAsta);
 

@@ -30,6 +30,7 @@ public class Opera {
     private Integer offerta;
     private StatoOpera stato;
     private String idAsta;
+    private String acquirente;
 
     public Opera(String titolo, String artista, Integer annoCreazione, String provenienza,
                  Tipologia tipologia, Proprieta proprieta, Condizioni condizioni){
@@ -150,5 +151,9 @@ public class Opera {
             setStato(StatoOpera.ASTA);
             this.idAsta = idAsta;
         }
+    }
+
+    public void setAcquirente(String acquirente) {
+        this.acquirente = acquirente;
     }
 }

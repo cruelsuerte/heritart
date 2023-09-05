@@ -35,21 +35,10 @@ public class ControllerCliente {
         String email = utente.getEmail();
         Ruolo role = utente.getRuolo();
 
-        List<Opera> opere = opereRepository.findByStato(StatoOpera.AGGIUDICATA);
-
-        Iterator<Opera> iterator = opere.iterator();
-        Opera opera; Offerta offerta; String idOpera;
-        while (iterator.hasNext()){
-            opera = iterator.next();
-            idOpera = opera.getId();
-            offerta = offerteRepository.findFirstByIdOperaOrderByValoreDesc(idOpera);
-            if(!offerta.getEmail().equals(email)){
-                iterator.remove();
-            }
-        }
+        List<Opera> opere = opereRepository.findByAcquirente(email);
 
         if(opere.isEmpty()){
-            model.addAttribute("error", "Nessun opera aggiunta alla collezione.");
+            model.addAttribute("error", "Nessun'opera aggiunta alla collezione.");
         }
 
         Pageable pageable = PageRequest.of(page, 8, Sort.Direction.ASC,"titolo");
