@@ -1,6 +1,6 @@
 package com.heritart.control;
 
-import com.heritart.utils.AuthenticationService;
+import com.heritart.services.AuthenticationService;
 import com.heritart.dao.AsteRepository;
 import com.heritart.dao.OpereRepository;
 import com.heritart.model.aste.Asta;
@@ -53,7 +53,6 @@ public class ControllerGestore {
         return "aggiungi_opera";
     }
 
-
     @PostMapping("/Gestore/newOpera")
     public String newOpera(@RequestParam @NotBlank String titolo,
                            @RequestParam @NotBlank String artista,
@@ -105,12 +104,13 @@ public class ControllerGestore {
             opera.setOfferta(baseAsta);
         }
 
-        for (MultipartFile file : files) {
-            opera.addPhoto(file);
+        if (files != null) {
+            for (MultipartFile file : files) {
+                opera.addPhoto(file);
+            }
         }
 
         opereRepository.save(opera);
-
         redirectAttributes.addFlashAttribute("success","Opera aggiunta al catalogo.");
 
         return "redirect:/Gestore/newOpera";

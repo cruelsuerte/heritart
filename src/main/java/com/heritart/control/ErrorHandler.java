@@ -2,14 +2,18 @@ package com.heritart.control;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -22,6 +26,7 @@ import java.util.Iterator;
 public class ErrorHandler {
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public String MaxUploadSizeExceededException(HttpServletRequest request,
                                                  RedirectAttributes redirectAttributes){
 
@@ -40,6 +45,7 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public String ContraintViolationException(ConstraintViolationException ex,
                                               HttpServletRequest request,
                                               RedirectAttributes redirectAttributes) {
@@ -62,6 +68,7 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public String MissingRequestParameterException(MissingServletRequestParameterException ex,
                                                    HttpServletRequest request,
                                                    RedirectAttributes redirectAttributes) {
@@ -73,6 +80,7 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public String MethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex,
                                                       HttpServletRequest request,
                                                       RedirectAttributes redirectAttributes) {

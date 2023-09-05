@@ -1,4 +1,4 @@
-package com.heritart.utils;
+package com.heritart.services;
 
 import com.heritart.dao.OfferteRepository;
 import com.heritart.dao.OpereRepository;
@@ -17,7 +17,7 @@ public class TransactionService {
     @Autowired
     OfferteRepository offerteRepository;
 
-    public void makeOffer(String email, String idOpera, Integer value){
+    public void makeOffer(String email, String idOpera, Integer value) throws Exception{
 
         Opera opera = opereRepository.findById(idOpera).orElseThrow();
 
@@ -29,6 +29,10 @@ public class TransactionService {
             opera.setOfferta(value + 50);
             opereRepository.save(opera);
 
+        }
+
+        else{
+            throw new Exception();
         }
 
     }

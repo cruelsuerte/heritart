@@ -7,7 +7,7 @@ import com.heritart.model.aste.StatoAsta;
 import com.heritart.model.opere.Opera;
 import com.heritart.model.utenti.Ruolo;
 import com.heritart.model.utenti.Utente;
-import com.heritart.utils.AuthenticationService;
+import com.heritart.services.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Controller;

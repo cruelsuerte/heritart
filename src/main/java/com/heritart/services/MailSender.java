@@ -1,4 +1,4 @@
-package com.heritart.utils;
+package com.heritart.services;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;

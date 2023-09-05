@@ -1,4 +1,4 @@
-package com.heritart.utils;
+package com.heritart.services;
 
 import com.heritart.dao.AsteRepository;
 import com.heritart.dao.OfferteRepository;

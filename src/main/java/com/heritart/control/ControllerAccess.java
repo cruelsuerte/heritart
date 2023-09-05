@@ -1,6 +1,6 @@
 package com.heritart.control;
 
-import com.heritart.utils.MailSender;
+import com.heritart.services.MailSender;
 import com.heritart.dao.TokenRepository;
 import com.heritart.dao.UtentiRepository;
 import com.heritart.model.utenti.Ruolo;

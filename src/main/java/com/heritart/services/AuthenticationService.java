@@ -1,4 +1,4 @@
-package com.heritart.utils;
+package com.heritart.services;
 
 import com.heritart.dao.UtentiRepository;
 import com.heritart.model.utenti.Utente;

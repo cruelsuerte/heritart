@@ -9,8 +9,8 @@ import com.heritart.model.offerte.Offerta;
 import com.heritart.model.opere.Opera;
 import com.heritart.model.utenti.Ruolo;
 import com.heritart.model.utenti.Utente;
-import com.heritart.utils.AuthenticationService;
-import com.heritart.utils.TransactionService;
+import com.heritart.services.AuthenticationService;
+import com.heritart.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -102,7 +102,7 @@ public class ControllerAsta {
             }
             catch (Exception e){
                 redirectAttributes.addFlashAttribute("error",
-                        "Una nuova offerta è stata presentata durante la tua richiesta. Rinvia una nuova offerta.");
+                        "Offerta presentata non valida. Rinvia una nuova offerta.");
             }
 //            }
 //

@@ -1,4 +1,4 @@
-package com.heritart.utils;
+package com.heritart.services;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
@@ -82,6 +82,7 @@ public class HeritartConfig extends AbstractMongoClientConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf()
                 .disable()
+
                 .authorizeRequests()
                 .antMatchers("/","/general/**","/error","/logout","/loginFailure",
                             "/newCliente","/newGestore","/Confirm/**","/Resend/**").permitAll()
@@ -99,7 +100,11 @@ public class HeritartConfig extends AbstractMongoClientConfiguration {
                 .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/")
+
+
                 .deleteCookies("JSESSIONID");
+
+
         return http.build();
     }
 
