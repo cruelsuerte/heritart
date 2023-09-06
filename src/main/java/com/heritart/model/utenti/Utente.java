@@ -74,5 +74,8 @@ public class Utente {
         this.enabled = enabled;
     }
 
+    public void setId(String id){
+        this.id=id;
+    }
 
 }

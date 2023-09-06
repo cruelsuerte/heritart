@@ -156,7 +156,7 @@ public class ControllerGestore {
                 asta.setDescrizione(descrizione);
             }
 
-            if(!file.isEmpty()){
+            if(file != null){
                 asta.addPhoto(file);
             }
 

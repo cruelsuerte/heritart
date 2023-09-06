@@ -88,13 +88,13 @@ public class ControllerAsta {
         Asta asta = asteRepository.findById(idAsta).orElseThrow();
 
         if(asta.getStato() == StatoAsta.IN_CORSO
-//           && role == Ruolo.CLIENTE
+           && role == Ruolo.CLIENTE
         ){
 
             String email = utente.getEmail();
             Offerta lastOffer = offerteRepository.findFirstByIdOperaOrderByValoreDesc(idOpera);
 
-//            if(lastOffer == null || !email.equals(lastOffer.getEmail())){
+            if(lastOffer == null || !email.equals(lastOffer.getEmail())){
             try {
                 transactionService.makeOffer(email, idOpera, value);
                 redirectAttributes.addFlashAttribute("success",
@@ -104,12 +104,12 @@ public class ControllerAsta {
                 redirectAttributes.addFlashAttribute("error",
                         "Offerta presentata non valida. Rinvia una nuova offerta.");
             }
-//            }
-//
-//            else{
-//                redirectAttributes.addFlashAttribute("error",
-//                        "Hai già presentato l'ultima migliore offerta. Attendi una nuova offerta.");
-//            }
+            }
+
+            else{
+                redirectAttributes.addFlashAttribute("error",
+                        "Hai già presentato l'ultima migliore offerta. Attendi una nuova offerta.");
+            }
 
 
         }
