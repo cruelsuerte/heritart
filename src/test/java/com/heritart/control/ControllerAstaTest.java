@@ -39,9 +39,8 @@ class ControllerAstaTest {
 
 
     @Test
-    @WithMockUser(authorities = "CLIENTE")
+    @WithMockUser(username = "lucacampanile3@gmail.com", password = "luca", authorities = "CLIENTE")
     void Offerta1()throws Exception{
-        auth.loadUserByUsername("lucacampanile3@gmail.com");
         //TEST-1 OFFERTA PIU BASSA DELL'ULTIMA MIGLIOR PRESENTATA
         mvc.perform(post("/Catalog/64dd38bd6ae17b75c8b91544/Asta/64f7303c436a6037d0b03551")
                         .param("value","7000"))
@@ -52,11 +51,9 @@ class ControllerAstaTest {
     }
 
     @Test
-    @WithMockUser(authorities = "CLIENTE")
+    @WithMockUser(username = "lucacampanile3@gmail.com", password = "luca", authorities = "CLIENTE")
     void Offerta2()throws Exception{
         //TEST-2 OFFERTA PRESENTATA CORRETTAMENTE
-        auth.loadUserByUsername("lucacampanile3@gmail.com");
-
         mvc.perform(post("/Catalog/64dd38bd6ae17b75c8b91544/Asta/64f7303c436a6037d0b03551")
                 .param("value","16000"))
                 .andExpect(status().is(302)) //STATUS:REDIRECTION
@@ -66,9 +63,8 @@ class ControllerAstaTest {
 
     //TEST-3 GIA PRESENTATA ULTIMA MIGLIORE OFFERTA 
     @Test
-    @WithMockUser(authorities = "CLIENTE")
+    @WithMockUser(username = "lucacampanile3@gmail.com", password = "luca", authorities = "CLIENTE")
     void Offerta3()throws Exception{
-        auth.loadUserByUsername("lucacampanile3@gmail.com");
 
         mvc.perform(post("/Catalog/64dd38bd6ae17b75c8b91544/Asta/64f7303c436a6037d0b03551")
                         .param("value","11000"))

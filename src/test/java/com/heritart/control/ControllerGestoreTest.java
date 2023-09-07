@@ -18,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -105,12 +106,11 @@ class ControllerGestoreTest {
     }
 
 
-
     @Test
-    @WithMockUser(authorities = "GESTORE")
+    @WithMockUser(username = "vansmilton@gmail.com", password = "cruel", authorities = "GESTORE")
     void newAsta1() throws Exception {
 //CASO 1 CAMPI OBBLIGATORI INSERITI E CORRETTI
-        auth.loadUserByUsername("vansmilton@gmail.com");
+       // mvc.perform(formLogin("/").user("email","vansmilton@gmail.com").password("cruel"));
 
         mvc.perform(post("/Gestore/newAsta")
                         .contentType("application/json")
@@ -124,10 +124,9 @@ class ControllerGestoreTest {
     }
 
     @Test
-    @WithMockUser(authorities = "GESTORE")
+    @WithMockUser(username = "vansmilton@gmail.com", password = "cruel", authorities = "GESTORE")
     void newAsta2() throws Exception {
 //CASO 2 1 CAMPO NON è STATO INSERITO CORRETTAMENTE
-        auth.loadUserByUsername("vansmilton@gmail.com");
 
         mvc.perform(post("/Gestore/newAsta")
                         .contentType("application/json")
