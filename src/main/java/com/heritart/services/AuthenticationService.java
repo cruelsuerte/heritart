@@ -18,8 +18,6 @@ public class AuthenticationService implements UserDetailsService {
     @Autowired
     UtentiRepository utentiRepository;
 
-    private Utente utente;
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
@@ -28,7 +26,6 @@ public class AuthenticationService implements UserDetailsService {
         if (utente != null && utente.isEnabled()){
             List<SimpleGrantedAuthority> ruolo = List.of(new SimpleGrantedAuthority(utente.getRuolo().name()));
 
-            this.utente = utente;
             return new User(utente.getEmail(), utente.getPassword(), ruolo);
         }
 
@@ -38,13 +35,9 @@ public class AuthenticationService implements UserDetailsService {
         }
     }
 
-    public Authentication getAuthentication(){
-        return SecurityContextHolder.getContext().getAuthentication();
-    }
-
-
     public Utente getUser(){
-        return utente;
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return utentiRepository.findByEmail(email);
     }
 
 }
