@@ -77,6 +77,7 @@ class ControllerAstaTest {
         Offerta offerta=offerteRepository.findFirstByIdOperaOrderByValoreDesc("64f7303c436a6037d0b03551");
         offerteRepository.delete(offerta);
 
+
     }
 
 
