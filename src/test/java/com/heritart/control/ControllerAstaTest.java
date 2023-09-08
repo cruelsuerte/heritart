@@ -42,8 +42,8 @@ class ControllerAstaTest {
     @WithMockUser(username = "lucacampanile3@gmail.com", password = "luca", authorities = "CLIENTE")
     void Offerta1()throws Exception{
         //TEST-1 OFFERTA PIU BASSA DELL'ULTIMA MIGLIOR PRESENTATA
-        mvc.perform(post("/Catalog/64dd38bd6ae17b75c8b91544/Asta/64f7303c436a6037d0b03551")
-                        .param("value","7000"))
+        mvc.perform(post("/Catalog/64dd38bd6ae17b75c8b91544/Asta/64dd37b66ae17b75c8b91541")
+                        .param("value","10"))
                 .andExpect(status().is(302)) //STATUS:REDIRECTION
                 .andExpect(flash().attribute("error", "Offerta presentata non valida. Rinvia una nuova offerta."));
 
@@ -54,7 +54,7 @@ class ControllerAstaTest {
     @WithMockUser(username = "lucacampanile3@gmail.com", password = "luca", authorities = "CLIENTE")
     void Offerta2()throws Exception{
         //TEST-2 OFFERTA PRESENTATA CORRETTAMENTE
-        mvc.perform(post("/Catalog/64dd38bd6ae17b75c8b91544/Asta/64f7303c436a6037d0b03551")
+        mvc.perform(post("/Catalog/64dd38bd6ae17b75c8b91544/Asta/64dd37b66ae17b75c8b91541")
                 .param("value","16000"))
                 .andExpect(status().is(302)) //STATUS:REDIRECTION
                 .andExpect(flash().attribute("success", "Nuova offerta presentata con successo."));
@@ -66,15 +66,15 @@ class ControllerAstaTest {
     @WithMockUser(username = "lucacampanile3@gmail.com", password = "luca", authorities = "CLIENTE")
     void Offerta3()throws Exception{
 
-        mvc.perform(post("/Catalog/64dd38bd6ae17b75c8b91544/Asta/64f7303c436a6037d0b03551")
-                        .param("value","11000"))
+        mvc.perform(post("/Catalog/64dd38bd6ae17b75c8b91544/Asta/64dd37b66ae17b75c8b91541")
+                        .param("value","8000"))
                 .andExpect(status().is(302)) //STATUS:REDIRECTION
                 .andExpect(flash().attribute("error", "Hai già presentato l'ultima migliore offerta. Attendi una nuova offerta."));
 
-        Opera opera=opereRepository.findById("64f7303c436a6037d0b03551").orElseThrow();
-        opera.setOfferta(8000);
+        Opera opera=opereRepository.findById("64dd37b66ae17b75c8b91541").orElseThrow();
+        opera.setOfferta(1050);
         opereRepository.save(opera);
-        Offerta offerta=offerteRepository.findFirstByIdOperaOrderByValoreDesc("64f7303c436a6037d0b03551");
+        Offerta offerta=offerteRepository.findFirstByIdOperaOrderByValoreDesc("64dd37b66ae17b75c8b91541");
         offerteRepository.delete(offerta);
 
     }

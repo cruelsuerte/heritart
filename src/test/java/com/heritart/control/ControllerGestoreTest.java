@@ -117,7 +117,7 @@ class ControllerGestoreTest {
                         .param("titolo", "TITOLO")
                         .param("dataInizio", "2023-09-25T07:00")
                         .param("dataFine", "2023-09-26T07:00")
-                        .param("opere", "64f73038436a6037d0b03550"))
+                        .param("opere", "64dd37b66ae17b75c8b91541"))
                 .andExpect(status().is(302)) //STATUS:REDIRECTION
                 .andExpect(flash().attribute("success", "Asta aggiunta al catalogo. " +
                         "L'asta avrà inizio in data 25/09/2023 alle ore 07:00 e terminerà in data 26/09/2023 alle ore 07:00."));
@@ -133,7 +133,7 @@ class ControllerGestoreTest {
                         .param("titolo", "TITOLO")
                         .param("dataInizio", "2023-09-25T07:00")
                         .param("dataFine", "sbagliato")
-                        .param("opere", "64f73038436a6037d0b03550"))
+                        .param("opere", "64dd37b66ae17b75c8b91541"))
                 .andExpect(status().isBadRequest())
                 .andExpect(flash().attribute("error", "Campo non valido: dataFine."));
     }
@@ -148,7 +148,7 @@ class ControllerGestoreTest {
                         .param("titolo", "TITOLO")
                         .param("dataInizio", "2023-09-25T07:00")
                         //MANCA Datafine
-                        .param("opere", "64f73038436a6037d0b03550"))
+                        .param("opere", "64dd37b66ae17b75c8b91541"))
                 .andExpect(status().isBadRequest())
                 .andExpect(flash().attribute("error", "Inserire dataFine."));
     }
@@ -163,7 +163,7 @@ class ControllerGestoreTest {
                         .param("titolo", "TITOLO")
                         .param("dataInizio", "2023-09-25T07:00")
                         .param("dataFine", "2023-09-25T08:00")
-                        .param("opere", "64f73038436a6037d0b03550"))
+                        .param("opere", "64dd37b66ae17b75c8b91541"))
                 .andExpect(flash().attribute("error", "Durata minima di un'asta: 3 ore. Fissare un termine ad almeno 3 ore dopo la data d'inizio."));
 
 
