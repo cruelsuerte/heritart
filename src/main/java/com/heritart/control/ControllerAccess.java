@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
@@ -169,8 +171,8 @@ public class ControllerAccess implements ErrorController{
         redirectAttributes.addFlashAttribute("success", "Conferma la registrazione accedendo al link inviato a " + email);
         MailSender mailSender = new MailSender("heritart.noreply@gmail.com","smtp.gmail.com","axqoblnhehpubpbg");
         mailSender.send(email,"Conferma registrazione",
-                "Ciao, grazie per esserti registrato a HeritArt come. Puoi confermare la tua registrazione a questo link:" +
-                        " http://localhost:8080/Confirm/" + token.getId() + ", a presto.");
+                "Ciao, grazie per esserti registrato a HeritArt come. Puoi confermare la tua registrazione a questo link: " +
+                        ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString() + "/Confirm/" + token.getId() + ", a presto.");
     }
 
 }
