@@ -114,11 +114,11 @@
                 <span th:text="${opera.provenienza}"></span>, <span th:text="${opera.proprieta.name}"></span>
             </h5>
             <p class="text-muted ps-4" style="text-align: left;">
-                <span th:text="${opera.condizioni.name}"></span>
+                <span th:if="${opera.condizioni}" th:text="${opera.condizioni.name}"></span>
                 <br><span th:text="${opera.dimensioni}"></span>
                 <br><span th:text="${opera.materiale}"></span>
-                <br><span th:text="${opera.tecnica.name}"></span>
-                <br><span th:text="${opera.correnteArtistica.name}"></span>
+                <br><span th:if="${opera.tecnica}" th:text="${opera.tecnica.name}"></span>
+                <br><span th:if="${opera.correnteArtistica}" th:text="${opera.correnteArtistica.name}"></span>
             </p>
             <p class="ps-4" th:text="${opera.descrizione}" style="overflow: scroll; height: 75px; text-align: left;"></p>
             <div class="pt-2 mb-4" style="display: flex; justify-content: center; align-items: center;">

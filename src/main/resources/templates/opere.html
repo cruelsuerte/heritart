@@ -72,11 +72,11 @@
                     <div class="row">
                         <div class="col-md-6">
                             <p class="card-text text-muted" style="text-align: left;">
-                                <span th:text="${opera.condizioni.name}"></span>
+                                <span th:if="${opera.condizioni}" th:text="${opera.condizioni.name}"></span>
                                 <br><span th:text="${opera.dimensioni}"></span>
                                 <br><span th:text="${opera.materiale}"></span>
-                                <br><span th:text="${opera.tecnica.name}"></span>
-                                <br><span th:text="${opera.correnteArtistica.name}"></span>
+                                <br><span th:if="${opera.tecnica}" th:text="${opera.tecnica.name}"></span>
+                                <br><span th:if="${opera.correnteArtistica}" th:text="${opera.correnteArtistica.name}"></span>
                             </p>
                         </div>
                         <div class="col-md-6">

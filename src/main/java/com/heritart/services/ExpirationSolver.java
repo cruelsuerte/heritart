@@ -27,7 +27,7 @@ public class ExpirationSolver {
     @Autowired
     OfferteRepository offerteRepository;
 
-    @Scheduled(fixedDelay = 1000, initialDelay = 1000)
+    @Scheduled(fixedDelay = 60000, initialDelay = 60000)
     public void checkAste(){
 
         List<Asta> aste = asteRepository.findAll();
